@@ -195,7 +195,7 @@ class InternshipsStudentsController extends Controller
                     'pic_contact' => 'required',
                     'pic_position' => 'required',
                     'phone' => 'required',
-                    'legal_file' => 'required',
+                    'legal_file' => 'file',
                 ], [], [
                     'name' => 'Name',
                     'address' => 'Address',
@@ -220,19 +220,21 @@ class InternshipsStudentsController extends Controller
                 }
 
                 //add new data to internship location
-                $file = $request->file('legal_file');
-                $dirUpload = 'legalfiles';
-                $fileName = $file->getClientOriginalName();
-                $file->move($dirUpload, $fileName);
                 $loc = [
                     'name' => $request->input('name'),
                     'address' => $request->input('address'),
                     'pic_contact' => $request->input('pic_contact'),
                     'pic_position' => $request->input('pic_position'),
                     'phone' => $request->input('phone'),
-                    'legal_file' => asset($dirUpload . '/' . $fileName),
                     'delete' => now()
                 ];
+                if ($request->hasFile('legal_file')) {
+                    $file = $request->file('legal_file');
+                    $dirUpload = 'legalfiles';
+                    $fileName = $file->getClientOriginalName();
+                    $file->move($dirUpload, $fileName);
+                    $loc['legal_file'] = asset($dirUpload . '/' . $fileName);
+                }
                 $il = InternshipLocations::create($loc)->id;
                 $arr['internship_location_id'] = $il;
             } else {
@@ -376,6 +378,16 @@ class InternshipsStudentsController extends Controller
         return view('internship.student.edit', $data);
     }
 
+    public function approval(Request $request, $id)
+    {
+        //validasi dulu id yang dikirim ada atau tidak
+        $ada = InternshipsStudents::findOrFail($id);
+        $data['data'] = InternshipsStudents::where('id', $id)->first();
+        $data['title'] = "Approval " . modulName;
+        $data['students'] = Students::get();
+        return view('internship.student.approval', $data);
+    }
+
     public function info(Request $request, $id)
     {
         //validasi dulu id yang dikirim ada atau tidak
@@ -431,16 +443,16 @@ class InternshipsStudentsController extends Controller
             'student_id' => 'required',
             'internship_location_id' => 'required',
             'internship_period_id' => 'required',
-            'approval_status' => 'required',
-            'status' => 'required',
+            // 'approval_status' => 'required',
+            // 'status' => 'required',
             'mentor_instructor_id' => 'required',
             'examiner_instructor_id' => 'required',
         ], [], [
             'student_id' => 'Student',
             'internship_location_id' => 'Internship Location',
             'internship_period_id' => 'Internship Period',
-            'approval_status' => 'Approval Status',
-            'status' => 'Status',
+            // 'approval_status' => 'Approval Status',
+            // 'status' => 'Status',
             'mentor_instructor_id' => 'Mentor Instructor',
             'examiner_instructor_id' => 'Examiner Instructor',
         ]);
@@ -462,9 +474,9 @@ class InternshipsStudentsController extends Controller
                 'student_id' => $request->input('student_id'),
                 'internship_location_id' => $request->input('internship_location_id'),
                 'internship_period_id' => $request->input('internship_period_id'),
-                'approval_status' => $request->input('approval_status'),
+                // 'approval_status' => $request->input('approval_status'),
                 'personal_choice' => $request->input('personal_choice'),
-                'status' => $request->input('status'),
+                // 'status' => $request->input('status'),
                 'mentor_instructor_id' => $request->input('mentor_instructor_id'),
                 'examiner_instructor_id' => $request->input('examiner_instructor_id'),
                 'created_by' => Auth::user()->id,
@@ -504,6 +516,56 @@ class InternshipsStudentsController extends Controller
                 $file->move($dirUpload, $fileName);
                 $arr['final_project_file'] = asset($dirUpload . '/' . $fileName);
             }
+
+            InternshipsStudents::where('id', $request->input('id'))->update($arr);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil!'
+            ]);
+        }
+    }
+
+    public function updateapproval(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'approval_status' => 'required',
+            'status' => 'required',
+        ], [], [
+            'approval_status' => 'Approval Status',
+            'status' => 'Status',
+        ]);
+
+        if ($validated->fails()) {
+            $err = array();
+            foreach ($validated->errors()->toArray() as $error) {
+                foreach ($error as $sub_error) {
+                    array_push($err, $sub_error . ' <br>');
+                }
+            }
+
+            return response()->json([
+                'status' => 'failed',
+                'message' => $err,
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            //Check jika data lain di periode yang sama sudah ada approval disetujui, maka data tidak daapt diproses
+            $data = InternshipsStudents::where('id', $request->input('id'))->first();
+            if ($data->approval_status != "Disetujui" && $request->input('approval_status') == "Disetujui") {
+                $check = InternshipsStudents::where('internship_period_id', $data->internship_period_id)->where('student_id', $data->student_id)->where('approval_status', 'Disetujui')->count();
+                if ($check >= 1) {
+                    return response([
+                        'status' => 'failed',
+                        'message' => 'Tidak dapat diproses karena ada data intership lain yang telah disetujui di periode yang sama.'
+                    ], 500);
+                    die();
+                }
+            }
+            $arr = [
+                'approval_status' => $request->input('approval_status'),
+                'status' => $request->input('status'),
+                'modified_by' => Auth::user()->id,
+            ];
 
             InternshipsStudents::where('id', $request->input('id'))->update($arr);
 

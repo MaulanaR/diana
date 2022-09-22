@@ -98,7 +98,7 @@
                                 </select>
                                 <span class="help-block"></span>
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label class="control-label">Approval Status</label>
                                 <select class="sel form-control" name="approval_status">
                                     <option value="Menunggu Persetujuan"
@@ -134,7 +134,7 @@
                                     >Selesai</option>
                                 </select>
                                 <span class="help-block"></span>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label class="control-label">Mentor Instructor</label>
                                 <select class="sel form-control" name="mentor_instructor_id">

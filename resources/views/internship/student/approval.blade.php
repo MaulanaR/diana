@@ -10,36 +10,11 @@
 <script src="{{ asset('daterangepicker/moment.min.js') }}"></script>
 <script src="{{ asset('daterangepicker/daterangepicker.js') }}"></script>
     <script>
-    //datetime picker
-    $('#filterDate').daterangepicker({
-    singleDatePicker: true,
-    showDropdowns: true,
-    locale: {
-        cancelLabel: 'Clear',
-        format: 'YYYY-MM-DD'
-    }
-    });
-    $('#closedDate').daterangepicker({
-    singleDatePicker: true,
-    autoUpdateInput: false,
-    showDropdowns: true,
-    locale: {
-        cancelLabel: 'Clear',
-        format: 'YYYY-MM-DD'
-    }
-    });
-    $('#closedDate').on('apply.daterangepicker', function(ev, picker) {
-        $(this).val(picker.startDate.format('YYYY-MM-DD'));
-    });
-
-    $('#closedDate').on('cancel.daterangepicker', function(ev, picker) {
-        $(this).val('');
-    });
     function save() {
         var formData = new FormData($('#forminsert')[0]);
         $.ajax({
             type: "POST",
-            url: "{{ route('internship_periods.update') }}",
+            url: "{{ route('internship_students.updateapproval') }}",
             data: formData,
             dataType: "json",
             contentType: false,
@@ -48,7 +23,7 @@
                 popup("Informasi", response.message, 'success', '{{Request::segment(1)."/".Request::segment(2)}}');
             },
             error: function(xhr, textStatus, error) {
-                popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
+                popup("Perhatian", xhr.responseJSON.message, 'warning', false, 5000);
             }
         });
     }
@@ -69,31 +44,40 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Academic Period</label>
-                                <select class="sel form-control" name="academic_period_id">
-                                    @foreach ($academic_period as $period)
-                                        <option value="{{$period->id}}" 
-                                        @if($data->academic_period_id == $period->id)
+                                <label class="control-label">Approval Status</label>
+                                <select class="sel form-control" name="approval_status">
+                                    <option value="Menunggu Persetujuan"
+                                    @if($data->approval_status == "Menunggu Persetujuan")
                                         selected="true"
-                                        @endif
-                                        >{{$period->name}}</option>
-                                    @endforeach
+                                    @endif
+                                    >Menunggu Persetujuan</option>
+                                    <option value="Disetujui"
+                                    @if($data->approval_status == "Disetujui")
+                                        selected="true"
+                                    @endif
+                                    >Disetujui</option>
+                                    <option value="Ditolak"
+                                    @if($data->approval_status == "Ditolak")
+                                        selected="true"
+                                    @endif
+                                    >Ditolak</option>
                                 </select>
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label ">Nama</label>
-                                <input type="text" name="name" class="form-control" placeholder="2021/2022 - Ganjil" value="{{$data->name}}">
-                                <span class="help-block"></span>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label ">Tanggal dibuka</label>
-                                <input type="text" name="start_date" class="form-control" id="filterDate" placeholder="Start Date" value="{{$data->start_date}}">
-                                <span class="help-block"></span>
-                            </div>
-                            <div class="form-group">
-                                <label class="control-label ">Tanggal ditutup</label>
-                                <input type="text" name="end_date" class="form-control" id="closedDate" placeholder="Closed Date" value="{{$data->end_date}}">
+                                <label class="control-label">Status</label>
+                                <select class="sel form-control" name="status">
+                                    <option value="Aktif"
+                                    @if($data->status == "Aktif")
+                                        selected="true"
+                                    @endif
+                                    >Aktif</option>
+                                    <option value="Selesai"
+                                    @if($data->status == "Selesai")
+                                        selected="true"
+                                    @endif
+                                    >Selesai</option>
+                                </select>
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group float-right">

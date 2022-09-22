@@ -157,6 +157,7 @@
                             @if ($isAdmin)
                                 eButton += '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Info"><i class="fas fa-info-circle"></i> Informasi</button>'
                                 eButton += '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Edit"><i class="fas fa-edit"></i> Edit Data</button>'
+                                eButton += '<button type="button" class="btn btn-sm btn-outline-warning text-left" title="Approval"><i class="fas fa-check"></i> Persetujuan</button>'
                                 eButton += '<button type="button" class="btn btn-sm btn-outline-primary text-left" title="Instruktur"><i class="fas fa-user"></i> Instruktur</button>'
                                 eButton += '<button type="button" class="btn btn-sm btn-outline-success text-left" title="Logbook"><i class="fas fa-book"></i> Log Book ('+item.total_logbook+')</button>'
                                 eButton += '<button type="button" class="btn btn-sm btn-outline-success text-left" title="Berkas"><i class="fas fa-book"></i> Berkas Magang</button>'
@@ -201,6 +202,9 @@
                                     window.location.href = "{{route('logbook.index')}}"+"/"+item.id;
                                 }else if (e.target.title == 'Delete'){
                                     $("#jsGrid").jsGrid("deleteItem",item);
+                                }else if(e.target.title == 'Approval') {
+                                    e.stopPropagation();
+                                    window.location.href = "{{route('internship_students.approval')}}"+"/"+item.id;
                                 }
                             });
                         

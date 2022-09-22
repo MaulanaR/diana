@@ -56,10 +56,8 @@ class UsersController extends Controller
         $data->limit($request->input('pageSize'));
         $hasil = $data->get();
         //dd($hasil);
-        foreach($hasil as $key => $value_hasil)
-        {
-            if(!file_exists(public_path('avatar/'.$value_hasil->picture)))
-            {
+        foreach ($hasil as $key => $value_hasil) {
+            if (!file_exists(public_path('avatar/' . $value_hasil->picture))) {
                 $hasil[$key]['picture'] = 'user.png';
             }
         }
@@ -114,7 +112,7 @@ class UsersController extends Controller
                 $data['picture'] = $file->getClientOriginalName();
 
                 $file->move('avatar', $file->getClientOriginalName());
-            }else{
+            } else {
                 $data['picture'] = 'user.png';
             }
 
@@ -161,20 +159,18 @@ class UsersController extends Controller
     {
         $cek = '';
         $cekpw = '';
-        if($request->input('email_lama') != $request->input('email'))
-        {
+        if ($request->input('email_lama') != $request->input('email')) {
             $cek = '|unique:users,email';
         }
 
-        if($request->input('password') != '')
-        {
+        if ($request->input('password') != '') {
             $cekpw = '|required|confirmed|min:5';
         }
 
         $validated = Validator::make($request->all(), [
             'name'      => 'required|max:50',
             'id'        => 'required',
-            'email'     => 'required|email'.$cek,
+            'email'     => 'required|email' . $cek,
             'password'  => $cekpw,
             'avatar'    => 'image',
             'group.*'   => 'required',
@@ -199,13 +195,11 @@ class UsersController extends Controller
                 'name'     => $request->input('name'),
             );
 
-            if($request->input('email_lama') != $request->input('email'))
-            {
+            if ($request->input('email_lama') != $request->input('email')) {
                 $data['email'] = $request->input('email');
             }
 
-            if($request->input('password') != '')
-            {
+            if ($request->input('password') != '') {
                 $data['password'] = bcrypt($request->input('password'));
             }
 
@@ -251,7 +245,7 @@ class UsersController extends Controller
     {
         $data = User::where('id', $request->input('id'))->first();
 
-        if ($data->picture != 'avatar.png') {
+        if ($data->picture != 'user.png') {
             //delete avatar
             File::delete(public_path("avatar/" . $data->picture));
         }

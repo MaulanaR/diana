@@ -74,6 +74,7 @@ Route::prefix('app')->middleware(['roles', 'auth'])->group(function () {
     Route::get('internship_students/modal', [App\Http\Controllers\InternshipsStudentsController::class, 'modal'])->name('internship_students.modal');
     Route::get('internship_students/show', [App\Http\Controllers\InternshipsStudentsController::class, 'show'])->name('internship_students.show');
     Route::get('internship_students/edit/{id?}', [App\Http\Controllers\InternshipsStudentsController::class, 'edit'])->name('internship_students.edit');
+    Route::get('internship_students/approval/{id?}', [App\Http\Controllers\InternshipsStudentsController::class, 'approval'])->name('internship_students.approval');
     Route::get('internship_students/info/{id?}', [App\Http\Controllers\InternshipsStudentsController::class, 'info'])->name('internship_students.info');
     Route::get('internship_students/instruktur/{id?}', [App\Http\Controllers\InternshipsStudentsController::class, 'instruktur'])->name('internship_students.instruktur');
     Route::get('internship_students/berkas/{id?}', [App\Http\Controllers\InternshipsStudentsController::class, 'berkas'])->name('internship_students.berkas');
@@ -81,6 +82,7 @@ Route::prefix('app')->middleware(['roles', 'auth'])->group(function () {
     Route::post('internship_students/store', [App\Http\Controllers\InternshipsStudentsController::class, 'store'])->name('internship_students.store');
     Route::post('internship_students/storeStudent', [App\Http\Controllers\InternshipsStudentsController::class, 'storeStudent'])->name('internship_students.storeStudent');
     Route::post('internship_students/update', [App\Http\Controllers\InternshipsStudentsController::class, 'update'])->name('internship_students.update');
+    Route::post('internship_students/updateapproval', [App\Http\Controllers\InternshipsStudentsController::class, 'updateapproval'])->name('internship_students.updateapproval');
     Route::post('internship_students/updateinstruktor', [App\Http\Controllers\InternshipsStudentsController::class, 'updateinstruktor'])->name('internship_students.updateinstruktor');
     Route::post('internship_students/updateberkas', [App\Http\Controllers\InternshipsStudentsController::class, 'updateberkas'])->name('internship_students.updateberkas');
     Route::post('internship_students/updateevaluation', [App\Http\Controllers\InternshipsStudentsController::class, 'updateevaluation'])->name('internship_students.updateevaluation');

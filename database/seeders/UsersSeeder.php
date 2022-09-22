@@ -53,7 +53,7 @@ class UsersSeeder extends Seeder
         ]);
 
         $idmenu_internship_locations = DB::table('alus_mg')->insertGetId([
-            'menu_parent' => 56,
+            'menu_parent' => $idmenu_internship,
             'menu_nama' => 'Internship Locations',
             'menu_uri' => 'internship_locations',
             'menu_target' => null,
@@ -62,7 +62,7 @@ class UsersSeeder extends Seeder
         ]);
 
         $idmenu_internship_periods = DB::table('alus_mg')->insertGetId([
-            'menu_parent' => 56,
+            'menu_parent' => $idmenu_internship,
             'menu_nama' => 'Internship Periods',
             'menu_uri' => 'internship_periods',
             'menu_target' => null,
@@ -71,7 +71,7 @@ class UsersSeeder extends Seeder
         ]);
 
         $idmenu_internship_students = DB::table('alus_mg')->insertGetId([
-            'menu_parent' => 56,
+            'menu_parent' => $idmenu_internship,
             'menu_nama' => 'Interships Students',
             'menu_uri' => 'internship_students',
             'menu_target' => null,
@@ -90,7 +90,7 @@ class UsersSeeder extends Seeder
             'name' => 'Administrator',
             'email' => 'admin@admin.com',
             'password' => bcrypt('adminadmin'),
-            'picture' => 'avatar.png',
+            'picture' => 'avatar/user.png',
         ]);
 
         DB::table('alus_ug')->insert([
@@ -166,7 +166,7 @@ class UsersSeeder extends Seeder
             'name' => 'Student James',
             'email' => 'student@admin.com',
             'password' => bcrypt('adminadmin'),
-            'picture' => 'avatar.png',
+            'picture' => 'avatar/user.png',
         ]);
 
         DB::table('student_details')->insertGetId([
@@ -248,7 +248,7 @@ class UsersSeeder extends Seeder
             'name' => 'Instructor',
             'email' => 'instructor@admin.com',
             'password' => bcrypt('adminadmin'),
-            'picture' => 'avatar.png',
+            'picture' => 'avatar/user.png',
         ]);
 
         DB::table('instructors')->insertGetId([
