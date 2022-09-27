@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
+use App\Models\Instructors;
+use App\Models\Students;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -126,6 +129,13 @@ class UsersController extends Controller
                         'user_id' => $user->id,
                         'group_id' => $key,
                     );
+                    //Jika group student / instructor maka insert ke table detailnya
+                    $g = Group::where('id', $key)->first();
+                    if ($g->name == "student") {
+                        Students::firstOrCreate(['id' => $user->id, 'full_name' => $request->input('name')]);
+                    } else if ($g->name == "instructor") {
+                        Instructors::firstOrCreate(['id' => $user->id, 'name' => $request->input('name'), 'email' => $request->input('email')]);
+                    }
                 }
 
                 DB::table('alus_ug')->insert($gr);
@@ -226,6 +236,14 @@ class UsersController extends Controller
                         'user_id' => $request->input('id'),
                         'group_id' => $key,
                     );
+
+                    //Jika group student / instructor maka insert ke table detailnya
+                    $g = Group::where('id', $key)->first();
+                    if ($g->name == "student") {
+                        Students::firstOrCreate(['id' => $request->input('id'), 'full_name' => $request->input('name')]);
+                    } else if ($g->name == "instructor") {
+                        Instructors::firstOrCreate(['id' => $request->input('id'), 'name' => $request->input('name')]);
+                    }
                 }
 
                 //hapus data lama di alus_ug terkait user ini

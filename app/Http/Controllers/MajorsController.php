@@ -3,26 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Models\AcademicPeriods;
-use App\Models\Classes;
+use App\Models\Majors;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-const modulName = "Academic Periods";
+const modulName = "Majors";
 
-class AcademicPeriodsController extends Controller
+class MajorsController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $data['title'] = modulName;
-        return view('academic.period.index', $data);
+        return view('academic.major.index', $data);
     }
 
     public function modal()
     {
         $data['title'] = 'Add ' . modulName;
         $data['academic_period'] = AcademicPeriods::all();
-        return view('academic.period.add', $data);
+        return view('academic.major.add', $data);
     }
 
     /**
@@ -40,13 +45,13 @@ class AcademicPeriodsController extends Controller
     public function store(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'name' => 'required|min:2',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'code' => 'required',
+            'name' => 'required',
+            'academic_period_id' => 'required',
         ], [], [
-            'name' => 'Nama',
-            'start_date' => 'Tanggal dibuka',
-            'end_date' => 'Tanggal ditutup',
+            'code' => 'Code',
+            'name' => 'Name',
+            'academic_period_id' => 'Academic Period',
         ]);
 
         if ($validated->fails()) {
@@ -62,7 +67,15 @@ class AcademicPeriodsController extends Controller
                 'message' => $err,
             ], Response::HTTP_BAD_REQUEST);
         } else {
-            AcademicPeriods::create($request->all());
+
+            $arr = [
+                'code' => $request->input('code'),
+                'name' => $request->input('name'),
+                'academic_period_id' => $request->input('academic_period_id'),
+                'description' => $request->input('description'),
+            ];
+
+            Majors::create($arr);
 
             return response()->json([
                 'status' => 'success',
@@ -79,17 +92,20 @@ class AcademicPeriodsController extends Controller
      */
     public function show(Request $request)
     {
-        $data = AcademicPeriods::query();
-        $data->select('*');
-
+        $data = Majors::query();
+        $data->select('majors.*', 'academic_periods.name as academic_period_name');
+        $data->leftJoin('academic_periods', 'academic_periods.id', '=', 'majors.academic_period_id');
+        if ($request->input('academic_period_name')) {
+            $data->where('academic_periods.name', 'LIKE', '%' . $request->input('academic_period_name') . '%');
+        }
+        if ($request->input('code')) {
+            $data->where('code', 'LIKE', '%' . $request->input('code') . '%');
+        }
         if ($request->input('name')) {
             $data->where('name', 'LIKE', '%' . $request->input('name') . '%');
         }
-        if ($request->input('start_date')) {
-            $data->where('start_date', 'LIKE', '%' . $request->input('start_date') . '%');
-        }
-        if ($request->input('end_date')) {
-            $data->where('end_date', 'LIKE', '%' . $request->input('end_date') . '%');
+        if ($request->input('description')) {
+            $data->where('description', 'LIKE', '%' . $request->input('description') . '%');
         }
 
         if ($request->input('sortField') != '') {
@@ -101,20 +117,6 @@ class AcademicPeriodsController extends Controller
         $data->limit($request->input('pageSize'));
         $hasil = $data->get();
 
-        foreach ($hasil as $key => $data) {
-            $allClass = Classes::query();
-            $allClass->select(
-                'classes.*',
-                \DB::raw("(SELECT COUNT(*) FROM classes_students WHERE class_id = classes.id) as total_student"),
-                \DB::raw("(SELECT COUNT(*) FROM classes_students LEFT JOIN student_details ON student_details.id = classes_students.student_id WHERE class_id = classes.id AND student_details.gender='male') as total_student_male"),
-                \DB::raw("(SELECT COUNT(*) FROM classes_students LEFT JOIN student_details ON student_details.id = classes_students.student_id WHERE class_id = classes.id AND student_details.gender='female') as total_student_female")
-            );
-            $allClass->where('academic_period_id', $data->id);
-            $h = $allClass->first();
-            $hasil[$key]['total_student'] = $h->total_student;
-            $hasil[$key]['total_student_male'] = $h->total_student_male;
-            $hasil[$key]['total_student_female'] = $h->total_student_female;
-        }
         return response()->json([
             'data' => $hasil,
             'itemsCount' => $paging
@@ -130,10 +132,11 @@ class AcademicPeriodsController extends Controller
     public function edit(Request $request, $id)
     {
         //validasi dulu id yang dikirim ada atau tidak
-        $ada = AcademicPeriods::findOrFail($id);
-        $data['data'] = AcademicPeriods::where('id', $id)->first();
+        $ada = Majors::findOrFail($id);
+        $data['data'] = Majors::where('id', $id)->first();
+        $data['academic_period'] = AcademicPeriods::all();
         $data['title'] = "Edit " . modulName;
-        return view('academic.period.edit', $data);
+        return view('academic.major.edit', $data);
     }
 
     /**
@@ -146,13 +149,13 @@ class AcademicPeriodsController extends Controller
     public function update(Request $request)
     {
         $validated = Validator::make($request->all(), [
-            'name' => 'required|min:2',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date',
+            'code' => 'required',
+            'name' => 'required',
+            'academic_period_id' => 'required',
         ], [], [
-            'name' => 'Nama',
-            'start_date' => 'Tanggal dibuka',
-            'end_date' => 'Tanggal ditutup',
+            'code' => 'Code',
+            'name' => 'Name',
+            'academic_period_id' => 'Academic Period',
         ]);
 
         if ($validated->fails()) {
@@ -168,7 +171,14 @@ class AcademicPeriodsController extends Controller
                 'message' => $err,
             ], Response::HTTP_BAD_REQUEST);
         } else {
-            AcademicPeriods::where('id', $request->input('id'))->update($request->all());
+            $arr = [
+                'code' => $request->input('code'),
+                'name' => $request->input('name'),
+                'description' => $request->input('description'),
+                'academic_period_id' => $request->input('academic_period_id'),
+            ];
+
+            Majors::where('id', $request->input('id'))->update($arr);
 
             return response()->json([
                 'status' => 'success',
@@ -185,7 +195,7 @@ class AcademicPeriodsController extends Controller
      */
     public function destroy(Request $request)
     {
-        AcademicPeriods::destroy($request->input('id'));
+        Majors::destroy($request->input('id'));
 
         return response()->json([
             'status' => 'success',

@@ -19,6 +19,7 @@ class Students extends Model
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $fillable = [
+        'id',
         'full_name',
         'birth_place',
         'birth_date',
@@ -32,6 +33,7 @@ class Students extends Model
         'socmed_twitter',
         'socmed_other',
         'socmed_other_name',
+        'socmed_username',
         'biological_father_name',
         'biological_mother_name',
         'biological_father_phone',

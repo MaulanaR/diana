@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInternshipPeriodsTable extends Migration
+class CreateClassesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,16 +13,18 @@ class CreateInternshipPeriodsTable extends Migration
      */
     public function up()
     {
-        Schema::create('internship_periods', function (Blueprint $table) {
-            $table->bigInteger('id', true);
-            $table->string('name')->nullable();
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+        Schema::create('classes', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->string('code', 20)->nullable();
+            $table->string('name', 200)->nullable();
+            $table->text('description')->nullable();
             $table->timestamp('created_date')->nullable()->useCurrent();
             $table->bigInteger('created_by')->nullable();
             $table->timestamp('modified_date')->useCurrentOnUpdate()->nullable();
             $table->bigInteger('modified_by')->nullable();
             $table->timestamp('delete')->nullable();
+            $table->unsignedBigInteger('academic_period_id')->nullable();
+            $table->bigInteger('major_id')->nullable();
         });
     }
 
@@ -33,6 +35,6 @@ class CreateInternshipPeriodsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('internship_periods');
+        Schema::dropIfExists('classes');
     }
 }

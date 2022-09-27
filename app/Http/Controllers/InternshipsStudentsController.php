@@ -275,7 +275,6 @@ class InternshipsStudentsController extends Controller
             'student_details.socmed_instagram as student_socmed_instagram',
             'student_details.socmed_twitter as student_socmed_twitter',
             'student_details.socmed_other as student_socmed_other',
-            'student_details.socmed_other_name as student_socmed_other_name',
             'student_details.biological_father_name as student_biological_father_name',
             'student_details.biological_mother_name as student_biological_mother_name',
             'student_details.biological_father_phone as student_biological_father_phone',

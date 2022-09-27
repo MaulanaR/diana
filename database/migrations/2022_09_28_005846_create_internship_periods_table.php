@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateInstructorsTable extends Migration
+class CreateInternshipPeriodsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,17 @@ class CreateInstructorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('instructors', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+        Schema::create('internship_periods', function (Blueprint $table) {
+            $table->bigInteger('id', true);
             $table->string('name')->nullable();
-            $table->string('position')->nullable();
+            $table->date('start_date')->nullable();
+            $table->date('end_date')->nullable();
             $table->timestamp('created_date')->nullable()->useCurrent();
             $table->bigInteger('created_by')->nullable();
             $table->timestamp('modified_date')->useCurrentOnUpdate()->nullable();
             $table->bigInteger('modified_by')->nullable();
             $table->timestamp('delete')->nullable();
+            $table->bigInteger('academic_period_id')->nullable();
         });
     }
 
@@ -32,6 +34,6 @@ class CreateInstructorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('instructors');
+        Schema::dropIfExists('internship_periods');
     }
 }

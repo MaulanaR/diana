@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
-	<title>Login V1</title>
+	<title>Login || {{ config('app.name', 'Sistem Informasi') }}</title>
 	<meta charset="UTF-8">
         <!-- CSRF Token -->
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Admin Panel Website Project Management') }}</title>
+        <title>{{ config('app.name', 'Admin Panel') }}</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="{{asset ('login/images/icons/favicon.ico')}}"/>
@@ -37,7 +37,7 @@
 				<form class="login100-form validate-form" action="{{ route('login_offline_process') }}" method="POST">
                     @csrf
 					<span class="login100-form-title">
-						Project Management
+						{{ config('app.name', 'Sistem Informasi') }}
 					</span>
 
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">

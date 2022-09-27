@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Instructors extends Model
+class Classes extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -15,41 +15,21 @@ class Instructors extends Model
     const CREATED_AT = 'created_date';
     const UPDATED_AT = 'modified_date';
 
-    protected $table = 'instructors';
+    protected $table = 'classes';
     protected $primaryKey = 'id';
     public $incrementing = true;
     protected $fillable = [
         'id',
+        'code',
+        'name',
+        'description',
         'created_date',
         'created_by',
         'modified_date',
         'modified_by',
         'delete',
-        'name',
-        'gender',
-        'ttl',
-        'nuptk',
-        'status_perkawinan',
-        'provinsi',
-        'kecamatan',
-        'kota',
-        'kelurahan',
-        'address',
-        'rt',
-        'rw',
-        'kode_pos',
-        'telp_rumah',
-        'hp',
-        'email',
-        'npwp',
-        'status_kepegawaian',
-        'nip',
-        'pangkat',
-        'tmt_pns',
-        'nama_pasangan',
-        'pekerjaan',
-        'nip_pasangan',
-        'avatar',
+        'academic_period_id',
+        'major_id',
     ];
     protected $guarded = [];
 }

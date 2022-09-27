@@ -18,7 +18,7 @@ class CreateStudentDetailsTable extends Migration
             $table->string('full_name')->nullable();
             $table->string('birth_place', 200)->nullable();
             $table->date('birth_date')->nullable();
-            $table->enum('gender', ['l', 'p'])->nullable();
+            $table->enum('gender', ['male', 'female'])->nullable()->default('male');
             $table->string('religion', 20)->nullable();
             $table->string('nim', 25)->nullable();
             $table->string('nik', 17)->nullable();
@@ -27,7 +27,7 @@ class CreateStudentDetailsTable extends Migration
             $table->boolean('socmed_instagram')->nullable();
             $table->boolean('socmed_twitter')->nullable();
             $table->tinyInteger('socmed_other')->nullable();
-            $table->string('socmed_other_name')->nullable();
+            $table->string('socmed_username')->nullable();
             $table->string('biological_father_name')->nullable();
             $table->string('biological_mother_name')->nullable();
             $table->string('biological_father_phone', 20)->nullable();

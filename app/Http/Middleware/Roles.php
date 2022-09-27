@@ -111,7 +111,7 @@ class Roles
     public function canview($id_user = 0, $group = array())
     {
         $menu_uri = request()->segment(2);
-        if ($menu_uri == null || request()->segment(2) == 'ajax' || request()->segment(2) == 'logbook') {
+        if ($menu_uri == null || request()->segment(2) == 'ajax' || request()->segment(2) == 'logbook' || request()->segment(2) == 'students' || request()->segment(2) == 'instructors') {
             if (request()->segment(1) == 'app') {
                 return [
                     'can_view' => 1,
