@@ -296,11 +296,9 @@ class InternshipsStudentsController extends Controller
 
             'mentor.id as mentor_id',
             'mentor.name as mentor_name',
-            'mentor.position as mentor_position',
 
             'examiner.id as examiner_id',
             'examiner.name as examiner_name',
-            'examiner.position as examiner_position',
 
             \DB::raw('(select count(*) from logbooks where logbooks.internships_students_id = interships_students.id) as total_logbook')
         );

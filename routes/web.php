@@ -130,7 +130,9 @@ Route::prefix('app')->middleware(['roles', 'auth', 'PageHitMiddleware'])->group(
     Route::get('courses/modal', [App\Http\Controllers\CoursesController::class, 'modal'])->name('courses.modal');
     Route::get('courses/show', [App\Http\Controllers\CoursesController::class, 'show'])->name('courses.show');
     Route::get('courses/edit/{id?}', [App\Http\Controllers\CoursesController::class, 'edit'])->name('courses.edit');
+    Route::get('courses/editbobot/{id?}', [App\Http\Controllers\CoursesController::class, 'editbobot'])->name('courses.editbobot');
     Route::post('courses/store', [App\Http\Controllers\CoursesController::class, 'store'])->name('courses.store');
     Route::post('courses/update', [App\Http\Controllers\CoursesController::class, 'update'])->name('courses.update');
+    Route::post('courses/updatebobot', [App\Http\Controllers\CoursesController::class, 'updatebobot'])->name('courses.updatebobot');
     Route::delete('courses/destroy', [App\Http\Controllers\CoursesController::class, 'destroy'])->name('courses.destroy');
 });

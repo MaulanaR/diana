@@ -170,19 +170,25 @@
                 {
                     type: "control",
                     itemTemplate: function(value, item) {
-                        var ebuton = '';
-                        var dbuton = '';
+                        let startDiv = '<div class="btn-group-vertical">'
+                        let endDiv = '</div>'
+                        var eButton = '';
+                        var dButton = '';
                         @if (session('can_edit'))
-                            ebuton = '<i class="fas fa-pen" style="color:blue" title="Edit"></i>'
+                            eButton += '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Edit"><i class="fas fa-edit"></i> Edit Data</button>'
                         @endif
+                            eButton += '<button type="button" class="btn btn-sm btn-outline-primary text-left" title="Bobot"><i class="fas fa-book"></i> Bobot</button>'
                         @if (session('can_delete'))
-                            dbuton = ' <i class="fas fa-trash" style="color:red" title="Delete"></i> '
+                            dButton += '<button type="button" class="btn btn-sm btn-outline-danger text-left" title="Delete"><i class="fas fa-trash"></i> Delete</button>'
                         @endif
-                        var editDeleteBtn = $(ebuton+dbuton)
+                        let editDeleteBtn = $(startDiv+eButton+dButton+endDiv)
                             .on('click', function (e) {
                                 if (e.target.title == 'Edit') {
                                     e.stopPropagation();
                                     modal_edit(item);
+                                } else if (e.target.title == 'Bobot') {
+                                    e.stopPropagation();
+                                    window.location.href = "{{route('courses.editbobot')}}"+"/"+item.id;
                                 } else if (e.target.title == 'Delete'){
                                     $("#jsGrid").jsGrid("deleteItem",item);
                                 }
@@ -287,6 +293,7 @@
                             </div>
                         </div>
                     </div>
+                    @if(!$isStudent)
                     <div class="form-group">
                         <div class="row">
                             <div class="col-2">
@@ -311,6 +318,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
                     <div class="form-group">
                         <div class="row">
                             <div class="col-5 text-right">

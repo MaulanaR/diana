@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicPeriods;
 use App\Models\Classes;
+use App\Models\CourseBobot;
 use App\Models\Courses;
 use App\Models\Instructors;
 use App\Models\Majors;
@@ -28,6 +29,18 @@ class CoursesController extends Controller
         $data['majors'] = Majors::all();
         $data['classes'] = Classes::all();
         $data['title'] = modulName;
+
+        $groups = Session::get('current_roles');
+        $data['isStudent'] = false;
+        $data['isInstructor'] = false;
+        foreach ($groups as $key => $value) {
+            if ($value->name == "student") {
+                $data['isStudent'] = true;
+            } else if ($value->name == "instructor") {
+                $data['isInstructor'] = true;
+            }
+        }
+
         return view('academic.course.index', $data);
     }
 
@@ -159,6 +172,18 @@ class CoursesController extends Controller
                     ->orWhere('courses.head_instructor_id', Auth::user()->id);
             });
         }
+        if ($isStudent) {
+            $data->where(function ($query) {
+                $class = \DB::table('classes_students')->where('student_id', Auth::user()->id)->get();
+                foreach ($class as $key => $valueClass) {
+                    $query->where('courses.class_id', $valueClass->class_id);
+                    if ($key == 0) {
+                    } else {
+                        $query->orWhere('courses.class_id', $valueClass->class_id);
+                    }
+                }
+            });
+        }
         if ($request->input('academic_period_name')) {
             $data->where('academic_periods.name', 'LIKE', '%' . $request->input('academic_period_name') . '%');
         }
@@ -230,6 +255,15 @@ class CoursesController extends Controller
         return view('academic.course.edit', $data);
     }
 
+    public function editbobot(Request $request, $id)
+    {
+        //validasi dulu id yang dikirim ada atau tidak
+        $ada = Courses::findOrFail($id);
+        $data['data'] = CourseBobot::firstOrCreate(['course_id' => $id])->first();
+        $data['title'] = "Edit Bobot - " . $ada->name;
+        return view('academic.course.bobot', $data);
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -292,6 +326,82 @@ class CoursesController extends Controller
             ];
 
             Courses::where('id', $request->input('id'))->update($arr);
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil!'
+            ]);
+        }
+    }
+
+    public function updatebobot(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'course_id' => 'required',
+            'a_min' => 'required',
+            'a_max' => 'required',
+            'b_min' => 'required',
+            'b_max' => 'required',
+            'bplus_min' => 'required',
+            'bplus_max' => 'required',
+            'c_min' => 'required',
+            'c_max' => 'required',
+            'cplus_min' => 'required',
+            'cplus_max' => 'required',
+            'd_min' => 'required',
+            'd_max' => 'required',
+            'e_min' => 'required',
+            'e_max' => 'required',
+        ], [], [
+            'course_id' => 'Mata Kuliah',
+            'a_min' => 'A Min',
+            'a_max' => 'A Max',
+            'b_min' => 'B Min',
+            'b_max' => 'B Max',
+            'bplus_min' => 'B Min',
+            'bplus_max' => 'B Max',
+            'c_min' => 'C Min',
+            'c_max' => 'C Max',
+            'cplus_min' => 'C Min',
+            'cplus_max' => 'C Max',
+            'd_min' => 'D Min',
+            'd_max' => 'D Max',
+            'e_min' => 'E Min',
+            'e_max' => 'E Max',
+        ]);
+
+        if ($validated->fails()) {
+            $err = array();
+            foreach ($validated->errors()->toArray() as $error) {
+                foreach ($error as $sub_error) {
+                    array_push($err, $sub_error . ' <br>');
+                }
+            }
+
+            return response()->json([
+                'status' => 'failed',
+                'message' => $err,
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            $arr = [
+                'course_id' => $request->input('course_id'),
+                'a_min' => $request->input('a_min'),
+                'a_max' => $request->input('a_max'),
+                'b_min' => $request->input('b_min'),
+                'b_max' => $request->input('b_max'),
+                'bplus_min' => $request->input('bplus_min'),
+                'bplus_max' => $request->input('bplus_max'),
+                'c_min' => $request->input('c_min'),
+                'c_max' => $request->input('c_max'),
+                'cplus_min' => $request->input('cplus_min'),
+                'cplus_max' => $request->input('cplus_max'),
+                'd_min' => $request->input('d_min'),
+                'd_max' => $request->input('d_max'),
+                'e_min' => $request->input('e_min'),
+                'e_max' => $request->input('e_max'),
+            ];
+
+            CourseBobot::where('id', $request->input('id'))->update($arr);
 
             return response()->json([
                 'status' => 'success',

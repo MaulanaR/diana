@@ -39,7 +39,14 @@
 					<span class="login100-form-title">
 						{{ config('app.name', 'Sistem Informasi') }}
 					</span>
-
+                    @if(count($errors) > 0)
+                    @foreach( $errors->all() as $message )
+                     <div class="alert alert-danger display-hide">
+                      <button class="close" data-close="alert"></button>
+                      <span>{{ $message }}</span>
+                     </div>
+                    @endforeach
+                   @endif
 					<div class="wrap-input100 validate-input" data-validate = "Valid email is required: ex@abc.xyz">
 						<input id="email" type="email" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus class="input100 @error('email') is-invalid @enderror">
 						<span class="focus-input100"></span>

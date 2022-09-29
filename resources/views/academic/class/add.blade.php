@@ -114,7 +114,7 @@
                                                 </td>
                                                 <td>{{$student->nik}}</td>
                                                 <td>{{$student->nim}}</td>
-                                                <td>{{$student->fullname}}</td>
+                                                <td>{{$student->full_name}}</td>
                                             </tr>
                                         @endforeach
                                         </tbody>
