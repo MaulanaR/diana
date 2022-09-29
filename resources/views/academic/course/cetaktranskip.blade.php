@@ -34,7 +34,7 @@
                         </tr>
                         <tr>
                             <td width="30%">
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/e/ea/ELTIBIZ_small.png" alt="" width="100%">
+                                <img src="{{asset('logo/eltibiz.png')}}" alt="" width="100%">
                             </td>
                             <td width="70%">
                                 <h5 class="text-center">

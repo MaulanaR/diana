@@ -179,102 +179,10 @@
 
     </script>
 
-    <script>
-        function JSONToCSVConvertor(JSONData, Label, ShowLabel) {
-            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-            var CSV = '';
-            //Set Report title in first row or line
-            CSV += Label + '\r\n\n';
-            //This condition will generate the Label/Header
-            if (ShowLabel) {
-                var row = "";
-                //This loop will extract the label from 1st index of on array
-                for (var index in arrData[0]) {
-                    //Now convert each value to string and comma-seprated
-                    row += index + ',';
-
-                }
-                row = row.slice(0, -1);
-                //append Label row with line break
-                CSV += row + '\r\n';
-            }
-            //1st loop is to extract each row
-            for (var i = 0; i < arrData.length; i++) {
-                var row = "";
-                //2nd loop will extract each column and convert it in string comma-seprated
-                for (var index in arrData[i]) {
-
-                    row += '"' + arrData[i][index] + '",';
-
-                }
-                row.slice(0, row.length - 1);
-                //add a line break after each row
-                CSV += row + '\r\n';
-            }
-            if (CSV == '') {
-                alert("Invalid data");
-                return;
-            }
-            //Generate a file name
-            var fileName = "FileTitle";
-
-            //Initialize file format you want csv or xls
-            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-            //alert(uri);
-            // Now the little tricky part.
-            // you can use either>> window.open(uri);
-            // but this will not work in some browsers
-            // or you will not get the correct file extension
-            //this trick will generate a temp <a /> tag
-            var link = document.createElement("a");
-            link.href = URL.createObjectURL(new Blob([CSV], { type: "application/octet-stream" })); //added to fix network error problem in chrome
-            //set the visibility hidden so it will not effect on your web-layout
-            link.style = "visibility:hidden";
-            link.download = fileName + ".csv";
-            //this part will append the anchor tag and remove it after automatic click
-            document.body.appendChild(link);
-            link.click();
-            // document.body.removeChild(link);
-        }
-        function headerValues(){
-        return $( '#jsGrid' ).data( 'JSGrid' )
-                       .fields
-                       .map( function( d ){
-                        let v = String(d.title)
-                        v.replace(" ", "___")
-                           return d.name+"x"+v
-                       })
-}
-
-    function dataObjects(){
-    return $( '#jsGrid' ).data( 'JSGrid' ).data
-    }
-
-    function createJSONForSingle( object ){
-    var hash = {};
-    
-    headerValues().map( function( key ){
-        console.log(key)
-        hash[ key ] = object[ key ]
-    });
-
-    return hash;
-    }
-
-    function createJSON(){
-    objects = dataObjects().map( function( o ){
-        return createJSONForSingle( o )
-    });
-
-    return JSON.stringify( objects, null, 2 );
-    }
-
+    <script>        
     function modal_edit(itemedit)
     {
         window.location.href = "{{route('academic_periods.edit')}}"+"/"+itemedit.id;
-        // console.log(createJSON())
-        // JSONToCSVConvertor(createJSON(), "Vehicle Report", true);
     }
 
     function modal_add(){
@@ -291,6 +199,11 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div id="jsGrid"></div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            <button onclick="exportToCsv('jsGrid','{{isset($title) ? $title.' | ' : 'Export File'}}')" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export to CSV</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>

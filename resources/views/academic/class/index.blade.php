@@ -194,6 +194,11 @@
                 <!-- /.card-header -->
                 <div class="card-body">
                     <div id="jsGrid"></div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            <button onclick="exportToCsv('jsGrid','{{isset($title) ? $title.' | ' : 'Export File'}}')" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export to CSV</button>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.card-body -->
             </div>
