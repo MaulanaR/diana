@@ -67,7 +67,7 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label class="control-label ">Full Name</label>
+                                            <label class="control-label ">Full Name *</label>
                                             <input type="text" name="name" class="form-control" placeholder="" value="{{$data->name}}">
                                             <span class="help-block"></span>
                                         </div>
@@ -169,7 +169,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label ">Email</label>
+                                <label class="control-label ">Email *</label>
                                 <input type="text" name="email" class="form-control" placeholder="" value="{{$data->email}}">
                                 <span class="help-block"></span>
                             </div>

@@ -44,7 +44,7 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label ">Evaluation</label>
+                                <label class="control-label ">Evaluation *</label>
                                 <input type="number" name="evaluation" class="form-control" placeholder="" value="{{$data->evaluation}}">
                                 <span class="help-block"></span>
                             </div>

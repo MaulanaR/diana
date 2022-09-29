@@ -67,17 +67,17 @@
                                     </div>
                                     <div class="col-6">
                                         <div class="form-group">
-                                            <label class="control-label ">Full Name</label>
+                                            <label class="control-label ">Full Name *</label>
                                             <input type="text" name="full_name" class="form-control" placeholder="" value="{{$data->full_name}}">
                                             <span class="help-block"></span>
                                     </div>
                                     <div class="form-group">
-                                            <label class="control-label ">Birth Place</label>
+                                            <label class="control-label ">Birth Place *</label>
                                             <input type="text" name="birth_place" class="form-control" placeholder="" value="{{$data->birth_place}}">
                                             <span class="help-block"></span>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label ">Birth Date</label>
+                                        <label class="control-label ">Birth Date *</label>
                                         <input type="text" name="birth_date" class="dates form-control" placeholder="" value="{{$data->birth_date}}">
                                         <span class="help-block"></span>
                                     </div>
@@ -85,7 +85,7 @@
                                 </div>
                                 
                             <div class="form-group">
-                                        <label class="control-label">Gender</label>
+                                        <label class="control-label">Gender *</label>
                                         <select class="sel form-control" name="gender">
                                             <option value="Male"
                                             @if($data->gender == "Male")
@@ -101,7 +101,7 @@
                                     <span class="help-block"></span>
                             </div>
                                 <div class="form-group">
-                                        <label class="control-label ">Religion</label>
+                                        <label class="control-label ">Religion *</label>
                                         <select class="sel form-control" name="religion">
                                             <option value="Islam"
                                             @if($data->religion == "Islam")
@@ -137,22 +137,22 @@
                                         <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                        <label class="control-label"> NIM</label>
+                                        <label class="control-label">NIM *</label>
                                         <input type="text" name="nim" class="form-control" placeholder="" value="{{$data->nim}}">
                                         <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                        <label class="control-label"> NIK</label>
+                                        <label class="control-label">NIK *</label>
                                         <input type="text" name="nik" class="form-control" placeholder="" value="{{$data->nik}}">
                                         <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                        <label class="control-label ">Home Address</label>
+                                        <label class="control-label ">Home Address *</label>
                                         <input type="text" name="home_address" class="form-control" placeholder="" value="{{$data->home_address}}">
                                         <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                        <label class="control-label ">Phone</label>
+                                        <label class="control-label ">Phone *</label>
                                         <input type="text" name="phone" class="form-control" placeholder="" value="{{$data->phone}}">
                                         <span class="help-block"></span>
                                 </div>
@@ -194,42 +194,42 @@
                             </div>
         <div class="col-6">
                             <div class="form-group">
-                                    <label class="control-label ">Biological Father Name</label>
+                                    <label class="control-label ">Biological Father Name *</label>
                                     <input type="text" name="biological_father_name" class="form-control" placeholder="" value="{{$data->biological_father_name}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Biological Mother Name</label>
+                                    <label class="control-label ">Biological Mother Name *</label>
                                     <input type="text" name="biological_mother_name" class="form-control" placeholder="" value="{{$data->biological_mother_name}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Biological Father Phone</label>
+                                    <label class="control-label ">Biological Father Phone *</label>
                                     <input type="phone" name="biological_father_phone" class="form-control" placeholder="" value="{{$data->biological_father_phone}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Biological Mother Phone</label>
+                                    <label class="control-label ">Biological Mother Phone *</label>
                                     <input type="text" name="biological_mother_phone" class="form-control" placeholder="" value="{{$data->biological_mother_phone}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Origin School</label>
+                                    <label class="control-label ">Origin School *</label>
                                     <input type="phone" name="origin_school" class="form-control" placeholder="" value="{{$data->origin_school}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Major Origin School</label>
+                                    <label class="control-label ">Major Origin School *</label>
                                     <input type="text" name="major_origin_school" class="form-control" placeholder="" value="{{$data->major_origin_school}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">District Origin School</label>
+                                    <label class="control-label ">District Origin School *</label>
                                     <input type="text" name="district_origin_school" class="form-control" placeholder="" value="{{$data->district_origin_school}}">
                                     <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                    <label class="control-label ">Province Origin School</label>
+                                    <label class="control-label ">Province Origin School *</label>
                                     <input type="text" name="province_origin_school" class="form-control" placeholder="" value="{{$data->province_origin_school}}">
                                     <span class="help-block"></span>
                             </div>

@@ -36,7 +36,7 @@
                         <div class="form-body">
                             <input type="hidden" name="created_by" value="{{Auth::user()->id}}">
                             <div class="form-group">
-                                <label class="control-label">Student</label>
+                                <label class="control-label">Student *</label>
                                 <select class="sel form-control" name="student_id">
                                     @foreach ($students as $student)
                                         <option value="{{$student->id}}">{{$student->full_name}}</option>
@@ -45,7 +45,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Internship Location</label>
+                                <label class="control-label">Internship Location *</label>
                                 <select class="sel form-control" name="internship_location_id">
                                     @foreach ($locations as $location)
                                         <option value="{{$location->id}}">{{$location->name}}</option>
@@ -54,7 +54,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Internship Period</label>
+                                <label class="control-label">Internship Period *</label>
                                 <select class="sel form-control" name="internship_period_id">
                                     @foreach ($periods as $period)
                                         <option value="{{$period->id}}">{{$period->name}}</option>

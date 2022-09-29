@@ -54,7 +54,6 @@ class LogbookController extends Controller
             'internships_students_id' => 'required',
             'date' => 'required',
             'file' => 'required',
-            'description' => 'required',
         ], [], [
             'internships_students_id' => 'InternshipID',
             'date' => 'Tanggal',

@@ -52,12 +52,12 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Tanggal</label>
+                                <label class="control-label">Tanggal *</label>
                                 <input type="text" name="date" class="form-control" id="filterDate" placeholder="" value="{{$data->date}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">File Logbook</label>
+                                <label class="control-label">File Logbook *</label>
                                 <div class="mb-2">
                                     <a href="{{$data->file}}" class="btn btn-xs btn-info"> Unduh Logbook ({{basename($data->file)}})</a>
                                 </div>

@@ -52,12 +52,12 @@
                             <input type="hidden" name="created_by" value="{{Auth::user()->id}}">
                             <input type="hidden" name="internships_students_id" value="{{$id}}">
                             <div class="form-group">
-                                <label class="control-label">Tanggal</label>
+                                <label class="control-label">Tanggal *</label>
                                 <input type="text" name="date" class="form-control" id="filterDate" placeholder="" value="">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">File</label>
+                                <label class="control-label">File *</label>
                                 <input type="file" name="file" class="form-control" placeholder="" value="">
                                 <span class="help-block"></span>
                             </div>

@@ -178,6 +178,7 @@
                             eButton += '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Edit"><i class="fas fa-edit"></i> Edit Data</button>'
                         @endif
                             eButton += '<button type="button" class="btn btn-sm btn-outline-primary text-left" title="Bobot"><i class="fas fa-book"></i> Bobot</button>'
+                            eButton += '<button type="button" class="btn btn-sm btn-outline-success text-left" title="Nilai"><i class="fas fa-child"></i> Kelola Nilai</button>'
                         @if (session('can_delete'))
                             dButton += '<button type="button" class="btn btn-sm btn-outline-danger text-left" title="Delete"><i class="fas fa-trash"></i> Delete</button>'
                         @endif
@@ -189,6 +190,9 @@
                                 } else if (e.target.title == 'Bobot') {
                                     e.stopPropagation();
                                     window.location.href = "{{route('courses.editbobot')}}"+"/"+item.id;
+                                } else if (e.target.title == 'Nilai') {
+                                    e.stopPropagation();
+                                    window.location.href = "{{route('courses.editnilai')}}"+"/"+item.id;
                                 } else if (e.target.title == 'Delete'){
                                     $("#jsGrid").jsGrid("deleteItem",item);
                                 }

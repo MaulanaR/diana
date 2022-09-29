@@ -8,6 +8,8 @@ use App\Models\CourseBobot;
 use App\Models\Courses;
 use App\Models\Instructors;
 use App\Models\Majors;
+use App\Models\StudentCourseGrade;
+use App\Models\Students;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
@@ -78,7 +80,7 @@ class CoursesController extends Controller
             'head_instructor_id' => 'required',
             'name' => 'required',
             'sks' => 'required',
-            'total_unit' => 'required',
+            'total_unit' => '',
             'description_unit' => '',
         ], [], [
             'categories' => 'Categories',
@@ -259,9 +261,52 @@ class CoursesController extends Controller
     {
         //validasi dulu id yang dikirim ada atau tidak
         $ada = Courses::findOrFail($id);
-        $data['data'] = CourseBobot::firstOrCreate(['course_id' => $id])->first();
-        $data['title'] = "Edit Bobot - " . $ada->name;
+        $bobot = CourseBobot::where('course_id', $id)->first();
+        if ($bobot) {
+            $data['data'] = $bobot;
+        } else {
+            $data['data'] = CourseBobot::create(['course_id' => $id]);
+        }
+        $data['title'] = "Bobot - " . $ada->name;
         return view('academic.course.bobot', $data);
+    }
+
+    public function editnilai(Request $request, $id)
+    {
+        //validasi dulu id yang dikirim ada atau tidak
+        $ada = Courses::findOrFail($id);
+        $data['data'] = Courses::where('courses.id', $id)
+            ->select(
+                'courses.*',
+                'instructors.name as instructor_name',
+                'instructors2.name as instructor2_name',
+                "classes.name as class_name"
+            )
+            ->leftJoin('classes', 'classes.id', '=', 'courses.class_id')
+            ->leftJoin('instructors', 'instructors.id', '=', 'courses.head_instructor_id')
+            ->leftJoin('instructors as instructors2', 'instructors2.id', '=', 'courses.instructor_id')
+            ->first();
+        $data['bobot'] = CourseBobot::where('course_id', $id)->first();
+
+        $data['list_student'] = \DB::table('classes_students')
+            ->select(
+                "student_details.*",
+                "student_course_grade.course_id",
+                "student_course_grade.student_id",
+                "student_course_grade.uts",
+                "student_course_grade.uas",
+                "student_course_grade.final",
+                "student_course_grade.grade",
+            )
+            ->where('class_id', $ada->class_id)
+            ->leftJoin('student_details', 'student_details.id', '=', 'classes_students.student_id')
+            ->leftJoin('student_course_grade', function ($join) use ($ada) {
+                $join->on('student_course_grade.student_id', '=', 'classes_students.student_id');
+                $join->on('student_course_grade.course_id', '=', \DB::raw($ada->id));
+            })
+            ->get();
+        $data['title'] = "Penilaian - " . $ada->name;
+        return view('academic.course.nilai', $data);
     }
 
     /**
@@ -410,6 +455,61 @@ class CoursesController extends Controller
         }
     }
 
+    public function updatenilai(Request $request)
+    {
+        $validated = Validator::make($request->all(), [
+            'course_id' => 'required',
+            'file' => 'file',
+            'student_id' => 'required|array',
+        ], [], [
+            'course_id' => 'Mata Kuliah',
+
+        ]);
+
+        if ($validated->fails()) {
+            $err = array();
+            foreach ($validated->errors()->toArray() as $error) {
+                foreach ($error as $sub_error) {
+                    array_push($err, $sub_error . ' <br>');
+                }
+            }
+
+            return response()->json([
+                'status' => 'failed',
+                'message' => $err,
+            ], Response::HTTP_BAD_REQUEST);
+        } else {
+            if ($request->hasFile('file')) {
+                $file = $request->file('file');
+                $dirUpload = 'nilai';
+                $fileName = $file->getClientOriginalName();
+                $file->move($dirUpload, $fileName);
+                $arr['file'] = asset($dirUpload . '/' . $fileName);
+                Courses::where('id', $request->input('course_id'))->update($arr);
+            }
+
+            StudentCourseGrade::where('course_id', $request->input('course_id'))->delete();
+
+            $sts = $request->input('student_id');
+            foreach ($sts as $key => $student) {
+                $input = [
+                    'course_id' => $request->input('course_id'),
+                    'student_id' => $student,
+                    'uts' => $request->input('uts')[$key],
+                    'uas' => $request->input('uas')[$key],
+                    'final' => $request->input('final')[$key],
+                    'grade' => $request->input('grade')[$key],
+                ];
+                StudentCourseGrade::create($input);
+            }
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Berhasil!'
+            ]);
+        }
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -424,5 +524,144 @@ class CoursesController extends Controller
             'status' => 'success',
             'message' => 'Berhasil dihapus!'
         ]);
+    }
+
+    //=======TRANSKIP=========
+    public function indextranskip()
+    {
+        $data['periods'] = AcademicPeriods::all();
+        $data['majors'] = Majors::all();
+        $data['classes'] = Classes::all();
+        $data['title'] = "Transkip Nilai";
+
+        $groups = Session::get('current_roles');
+        $data['isStudent'] = false;
+        $data['isInstructor'] = false;
+        foreach ($groups as $key => $value) {
+            if ($value->name == "student") {
+                $data['isStudent'] = true;
+            } else if ($value->name == "instructor") {
+                $data['isInstructor'] = true;
+            }
+        }
+
+        return view('academic.course.listtranskip', $data);
+    }
+
+    public function showtranskip(Request $request)
+    {
+        $groups = Session::get('current_roles');
+        $isAdmin = false;
+        $isStudent = false;
+        $isInstructor = false;
+        foreach ($groups as $key => $value) {
+            if ($value->name == "admin") {
+                $isAdmin = true;
+            } else if ($value->name == "student") {
+                $isStudent = true;
+            } else if ($value->name == "instructor") {
+                $isInstructor = true;
+            }
+        }
+
+        $data = \DB::table('classes_students');
+        $data->select(
+            'classes_students.*',
+
+            'classes.id as class_id',
+            'classes.code as class_code',
+            'classes.name as class_name',
+            'classes.description as class_description',
+            'classes.major_id as class_major_id',
+            'classes.academic_period_id as class_academic_period_id',
+
+            'student_details.*',
+            "academic_periods.name as academic_period_name",
+            "majors.name as major_name",
+        );
+        $data->leftJoin('student_details', 'student_details.id', '=', 'classes_students.student_id');
+        $data->leftJoin('classes', 'classes.id', '=', 'classes_students.class_id');
+        $data->leftJoin('academic_periods', 'academic_periods.id', '=', 'classes.academic_period_id');
+        $data->leftJoin('majors', 'majors.id', '=', 'classes.major_id');
+        if ($isStudent) {
+            $data->where('classes_students.student_id', Auth::user()->id);
+        }
+        if ($request->input('academic_period_name')) {
+            $data->where('academic_periods.name', 'LIKE', '%' . $request->input('academic_period_name') . '%');
+        }
+        if ($request->input('major_name')) {
+            $data->where('majors.name', 'LIKE', '%' . $request->input('major_name') . '%');
+        }
+        if ($request->input('academic_period_id')) {
+            $data->where('classes.academic_period_id', $request->input('academic_period_id'));
+        }
+        if ($request->input('major_id')) {
+            $data->where('classes.major_id', $request->input('major_id'));
+        }
+        if ($request->input('class_id')) {
+            $data->where('classes_students.class_id', $request->input('class_id'));
+        }
+        if ($request->input('nim')) {
+            $data->where('student_details.nim', 'LIKE', '%' . $request->input('nim') . '%');
+        }
+        if ($request->input('full_name')) {
+            $data->where('student_details.full_name', 'LIKE', '%' . $request->input('full_name') . '%');
+        }
+
+        if ($request->input('sortField') != '') {
+            $data->orderBy($request->input('sortField'), $request->input('sortOrder'));
+        }
+        $paging = $data->count();
+
+        $request->input('pageIndex') != 1 ? $data->offset($request->input('pageSize') * ($request->input('pageIndex') - 1)) : 0;
+        $data->limit($request->input('pageSize'));
+        $hasil = $data->get();
+
+        return response()->json([
+            'data' => $hasil,
+            'itemsCount' => $paging
+        ]);
+    }
+
+    public function cetaktranskip(Request $request, $period_id, $class_id, $student_id, $semester)
+    {
+        if ($semester == 1) {
+            $fSemester = "Ganjil";
+            $data['semester'] = "I";
+        } else {
+            $fSemester = "Genap";
+            $data['semester'] = "II";
+        }
+        $data['student'] = Students::where('id', $student_id)->first();
+        $data['class'] = Classes::select("classes.*", "majors.name as major_name")
+            ->where('classes.id', $class_id)
+            ->leftJoin('majors', 'majors.id', '=', 'classes.major_id')
+            ->first();
+        $data['period'] = AcademicPeriods::where('id', $period_id)->first();
+        $courses = Courses::where('academic_period_id', $period_id)
+            ->where('class_id', $class_id)
+            // ->where('semester', $fSemester)
+            ->leftJoin('student_course_grade', function ($join) use ($student_id) {
+                $join->on('student_course_grade.course_id', '=', 'courses.id');
+                $join->on('student_course_grade.student_id', '=', \DB::raw($student_id));
+            })
+            ->get();
+        $data['courses'] = $courses;
+        $totalSks = 0;
+        $totalSksxNilai = 0;
+        $ipk = 0;
+        foreach ($courses as $course) {
+            $totalSks += $course->sks;
+            $totalSksxNilai += ($course->sks * $course->final);
+        }
+        if ($totalSks != 0) {
+            $ipk = $totalSksxNilai / $totalSks;
+        }
+
+        $data['totalsks'] = $totalSks;
+        $data['totalsksxnilai'] = $totalSksxNilai;
+        $data['ipk'] = $ipk;
+        $data['title'] = "Cetak Transkip Nilai";
+        return view('academic.course.cetaktranskip', $data);
     }
 }

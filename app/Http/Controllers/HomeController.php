@@ -230,4 +230,13 @@ class HomeController extends Controller
         }
         return response()->json(['status' => true, 'data' => $data]);
     }
+
+    public function get_students(Request $request, $id = null)
+    {
+        $data = [];
+        if ($id) {
+            $data = Students::where('major_id', $id)->get();
+        }
+        return response()->json(['status' => true, 'data' => $data]);
+    }
 }

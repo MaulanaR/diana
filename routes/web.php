@@ -30,6 +30,7 @@ Route::prefix('app')->middleware(['roles', 'auth', 'PageHitMiddleware'])->group(
 
     Route::get('/ajax/change_role', [App\Http\Controllers\HomeController::class, 'ubah_role'])->name('change_role');
     Route::get('/ajax/get_majors/{id?}', [App\Http\Controllers\HomeController::class, 'get_majors'])->name('get_majors');
+    Route::get('/ajax/get_students/{id?}', [App\Http\Controllers\HomeController::class, 'get_students'])->name('get_students');
     Route::get('/ajax/get_classes/{period_id?}/{major_id?}', [App\Http\Controllers\HomeController::class, 'get_classes'])->name('get_classes');
 
 
@@ -135,4 +136,11 @@ Route::prefix('app')->middleware(['roles', 'auth', 'PageHitMiddleware'])->group(
     Route::post('courses/update', [App\Http\Controllers\CoursesController::class, 'update'])->name('courses.update');
     Route::post('courses/updatebobot', [App\Http\Controllers\CoursesController::class, 'updatebobot'])->name('courses.updatebobot');
     Route::delete('courses/destroy', [App\Http\Controllers\CoursesController::class, 'destroy'])->name('courses.destroy');
+
+    Route::get('courses/editnilai/{id?}', [App\Http\Controllers\CoursesController::class, 'editnilai'])->name('courses.editnilai');
+    Route::post('courses/updatenilai', [App\Http\Controllers\CoursesController::class, 'updatenilai'])->name('courses.updatenilai');
+
+    Route::get('transkip', [App\Http\Controllers\CoursesController::class, 'indextranskip'])->name('transkip.index');
+    Route::get('transkip/show', [App\Http\Controllers\CoursesController::class, 'showtranskip'])->name('transkip.show');
+    Route::get('transkip/cetak/{period_id?}/{class_id?}/{student_id?}/{smstr?}', [App\Http\Controllers\CoursesController::class, 'cetaktranskip'])->name('transkip.cetak');
 });

@@ -44,27 +44,27 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Nama Tempat Magang</label>
+                                <label class="control-label">Nama Tempat Magang *</label>
                                 <input type="text" name="name" class="form-control" placeholder="" value="{{$data->name}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Alamat</label>
+                                <label class="control-label">Alamat *</label>
                                 <input type="text" name="address" class="form-control" placeholder="" value="{{$data->address}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Kontak</label>
+                                <label class="control-label">Kontak *</label>
                                 <input type="text" name="pic_contact" class="form-control" placeholder="" value="{{$data->pic_contact}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Jabatan Kontak</label>
+                                <label class="control-label">Jabatan Kontak *</label>
                                 <input type="text" name="pic_position" class="form-control" placeholder="" value="{{$data->pic_position}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">No Telp Perusahaan</label>
+                                <label class="control-label">No Telp Perusahaan *</label>
                                 <input type="text" name="phone" class="form-control" placeholder="" value="{{$data->phone}}">
                                 <span class="help-block"></span>
                             </div>

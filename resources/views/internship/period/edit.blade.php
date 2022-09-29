@@ -69,7 +69,7 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Academic Period</label>
+                                <label class="control-label">Academic Period *</label>
                                 <select class="sel form-control" name="academic_period_id">
                                     @foreach ($academic_period as $period)
                                         <option value="{{$period->id}}" 
@@ -82,17 +82,17 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label ">Nama</label>
+                                <label class="control-label ">Nama *</label>
                                 <input type="text" name="name" class="form-control" placeholder="2021/2022 - Ganjil" value="{{$data->name}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label ">Tanggal dibuka</label>
+                                <label class="control-label ">Tanggal dibuka *</label>
                                 <input type="text" name="start_date" class="form-control" id="filterDate" placeholder="Start Date" value="{{$data->start_date}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label ">Tanggal ditutup</label>
+                                <label class="control-label ">Tanggal ditutup *</label>
                                 <input type="text" name="end_date" class="form-control" id="closedDate" placeholder="Closed Date" value="{{$data->end_date}}">
                                 <span class="help-block"></span>
                             </div>

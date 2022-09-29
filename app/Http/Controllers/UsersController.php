@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Group;
 use App\Models\Instructors;
+use App\Models\Majors;
 use App\Models\Students;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -74,18 +75,29 @@ class UsersController extends Controller
     public function modal()
     {
         $data['list'] = DB::table('alus_g')->get();
+        $data['majors'] = Majors::all();
         return view('users.add', $data);
     }
 
     public function store(Request $request)
     {
-        $validated = Validator::make($request->all(), [
+        $arrVal = [
             'name' => 'required|min:1|max:50',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|confirmed|min:5',
             'avatar' => 'image',
             'group.*' => 'required',
-        ]);
+        ];
+
+        foreach ($request->input('group') as $key) {
+            //Jika group student / instructor maka insert ke table detailnya
+            $g = Group::where('id', $key)->first();
+            if ($g->name == "student") {
+                $arrVal['major_id'] = 'required';
+            }
+        }
+
+        $validated = Validator::make($request->all(), $arrVal);
 
         if ($validated->fails()) {
             $err = array();
@@ -106,6 +118,7 @@ class UsersController extends Controller
                 'username'           => $request->input('name'),
                 'name'           => $request->input('name'),
                 'email'              => $request->input('email'),
+                'major_id'              => $request->input('major_id'),
                 'password'           => bcrypt($request->input('password'))
             );
 
@@ -132,7 +145,7 @@ class UsersController extends Controller
                     //Jika group student / instructor maka insert ke table detailnya
                     $g = Group::where('id', $key)->first();
                     if ($g->name == "student") {
-                        Students::firstOrCreate(['id' => $user->id, 'full_name' => $request->input('name')]);
+                        Students::firstOrCreate(['id' => $user->id, 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id')]);
                     } else if ($g->name == "instructor") {
                         Instructors::firstOrCreate(['id' => $user->id, 'name' => $request->input('name'), 'email' => $request->input('email')]);
                     }
@@ -157,6 +170,7 @@ class UsersController extends Controller
             $data['data'] = User::where('id', $request->input('id'))->first();
             $data['groups'] = DB::table('users')->where('users.id', $request->input('id'))->select('alus_ug.group_id')->leftJoin('alus_ug', 'alus_ug.user_id', '=', 'users.id')->get();
             $data['list'] = DB::table('alus_g')->get();
+            $data['majors'] = Majors::all();
 
             return view('users.edit', $data);
         } else {
@@ -177,14 +191,24 @@ class UsersController extends Controller
             $cekpw = '|required|confirmed|min:5';
         }
 
-        $validated = Validator::make($request->all(), [
+        $arrVal = [
             'name'      => 'required|max:50',
             'id'        => 'required',
             'email'     => 'required|email' . $cek,
             'password'  => $cekpw,
             'avatar'    => 'image',
             'group.*'   => 'required',
-        ]);
+        ];
+
+        foreach ($request->input('group') as $key) {
+            //Jika group student / instructor maka insert ke table detailnya
+            $g = Group::where('id', $key)->first();
+            if ($g->name == "student") {
+                $arrVal['major_id'] = 'required';
+            }
+        }
+
+        $validated = Validator::make($request->all(), $arrVal);
 
         if ($validated->fails()) {
             $err = array();
@@ -203,6 +227,7 @@ class UsersController extends Controller
             $data = array(
                 'username' => $request->input('name'),
                 'name'     => $request->input('name'),
+                'major_id' => $request->input('major_id'),
             );
 
             if ($request->input('email_lama') != $request->input('email')) {
@@ -240,7 +265,14 @@ class UsersController extends Controller
                     //Jika group student / instructor maka insert ke table detailnya
                     $g = Group::where('id', $key)->first();
                     if ($g->name == "student") {
-                        Students::firstOrCreate(['id' => $request->input('id'), 'full_name' => $request->input('name')]);
+                        $ada = Students::findOrFail($request->input('id'));
+                        if ($ada) {
+                            $ada->full_name = $request->input('name');
+                            $ada->major_id = $request->input('major_id');
+                            $ada->save();
+                        } else {
+                            Students::create(['id' => $request->input('id'), 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id')]);
+                        }
                     } else if ($g->name == "instructor") {
                         Instructors::firstOrCreate(['id' => $request->input('id'), 'name' => $request->input('name')]);
                     }

@@ -111,9 +111,9 @@ class AcademicPeriodsController extends Controller
             );
             $allClass->where('academic_period_id', $data->id);
             $h = $allClass->first();
-            $hasil[$key]['total_student'] = $h->total_student;
-            $hasil[$key]['total_student_male'] = $h->total_student_male;
-            $hasil[$key]['total_student_female'] = $h->total_student_female;
+            $hasil[$key]['total_student'] = isset($h->total_student) ? $h->total_student : 0;
+            $hasil[$key]['total_student_male'] = isset($h->total_student_male) ? $h->total_student_male : 0;
+            $hasil[$key]['total_student_female'] = isset($h->total_student_female) ? $h->total_student_female : 0;
         }
         return response()->json([
             'data' => $hasil,

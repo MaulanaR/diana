@@ -88,7 +88,7 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Academic Period</label>
+                                <label class="control-label">Academic Period *</label>
                                 <select class="sel form-control" name="academic_period_id" id="academic_period_id" onchange="getMajor(this.value)">>
                                     @foreach ($periods as $period)
                                         <option value="{{$period->id}}" 
@@ -101,7 +101,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Major</label>
+                                <label class="control-label">Major *</label>
                                 <select class="sel form-control" name="major_id" id="major_id" onchange="getClass(this.value)">>
                                     @foreach ($majors as $major)
                                         <option value="{{$major->id}}"
@@ -114,7 +114,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Class</label>
+                                <label class="control-label">Class *</label>
                                 <select class="sel form-control" name="class_id" id="class_id">
                                     @foreach ($classes as $class)
                                         <option value="{{$class->id}}" 
@@ -127,7 +127,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Category</label>
+                                <label class="control-label">Category *</label>
                                 <select class="sel form-control" name="categories">
                                     <option value="Kompetensi Khusus"
                                     @if($data->categories == "Kompetensi Khusus")
@@ -143,7 +143,7 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Semester</label>
+                                <label class="control-label">Semester *</label>
                                 <select class="sel form-control" name="semester">
                                     <option value="Ganjil"
                                     @if($data->semester == "Ganjil")
@@ -185,12 +185,12 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Name</label>
+                                <label class="control-label">Name *</label>
                                 <input type="text" name="name" class="form-control" placeholder="" value="{{$data->name}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">SKS</label>
+                                <label class="control-label">SKS *</label>
                                 <input type="number" name="sks" class="form-control" placeholder="" value="{{$data->sks}}">
                                 <span class="help-block"></span>
                             </div>

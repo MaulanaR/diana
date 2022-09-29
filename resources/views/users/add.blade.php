@@ -9,21 +9,21 @@
         <input type="hidden" value="" name="id" />
         <div class="form-body">
             <div class="form-group">
-                <label class="control-label ">Nama Lengkap</label>
+                <label class="control-label ">Nama Lengkap *</label>
 
                 <input type="text" name="name" class="form-control" placeholder="Nama Lengkap" value="">
                 <span class="help-block"></span>
 
             </div>
             <div class="form-group">
-                <label class="control-label ">Email</label>
+                <label class="control-label ">Email *</label>
 
                 <input type="email" name="email" class="form-control" placeholder="Email" value="">
                 <span class="help-block"></span>
 
             </div>
             <div class="form-group">
-                <label class="control-label ">Password</label>
+                <label class="control-label ">Password *</label>
 
                 <input type="password" name="password" class="form-control" placeholder="Password"
                     value="">
@@ -31,21 +31,30 @@
 
             </div>
             <div class="form-group">
-                <label class="control-label ">Re-type Password</label>
+                <label class="control-label ">Re-type Password *</label>
 
                 <input type="password" name="password_confirmation" class="form-control" placeholder="Re-type Password"
                     value="">
                 <span class="help-block"></span>
 
             </div>
-
+            <div class="form-group">
+                <label class="control-label">Major (Wajib diisi jika role yang dipilih adalah student)</label>
+                <select class="sel form-control" name="major_id" id="major_id">
+                    <option value="">-- Choose Major --</option>
+                   @foreach ($majors as $major)
+                       <option value="{{$major->id}}">{{$major->name}}</option>
+                   @endforeach
+                </select>
+                <span class="help-block"></span>
+            </div>
             <div class="form-group">
                 <label class="control-label ">Avatar</label>
                 <input type="file" name="avatar" id="" class="form-control">
                 <span class="help-block"></span>
 
             </div>
-            <label class="control-label " >Groups</label>
+            <label class="control-label " >Groups *</label>
                     <div style="border:0px solid #ccc; width:98% ; height: 170px; overflow-y: scroll; padding-left: 10px;">
                       <div class="contain">
                           <table class="table table-striped table-bordered table-hover"> 

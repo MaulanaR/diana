@@ -160,7 +160,7 @@ class ClassesController extends Controller
         $ada = Classes::findOrFail($id);
         $data['data'] = Classes::where('id', $id)->first();
         $data['students'] = \DB::table('classes_students')->where('class_id', $id)->get()->pluck('student_id')->toArray();
-        $data['list_student'] = Students::all();
+        $data['list_student'] = Students::where('major_id', $ada->major_id)->get();
         $data['academic_period'] = AcademicPeriods::all();
         $data['title'] = "Edit " . modulName;
         $data['majors'] = Majors::where('academic_period_id', $ada->academic_period_id)->get();

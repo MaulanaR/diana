@@ -35,6 +35,7 @@
             dataType: "json",
             success: function(response) {
                 $("#major_id").empty();
+                $("#major_id").append('<option value="">-- Select Major --</option>')
                     $.each(response.data, function(indexInArray, valueOfElement) {
                         $("#major_id").append(
                             '<option value="' + valueOfElement.id + '">' + valueOfElement
@@ -42,6 +43,32 @@
                         );
                     });
                 $("#major_id").selectpicker('refresh')
+            },
+            error: function(xhr, textStatus, error) {
+                popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
+            }
+        });
+    }
+
+    function getStudents(id) {
+        $.ajax({
+            type: "GET",
+            url: "{{ url('app/ajax/get_students') }}/"+id,
+            dataType: "json",
+            success: function(response) {
+                $("#listStudents").empty();
+                    $.each(response.data, function(indexInArray, v) {
+                        $("#listStudents").append(
+                            `<tr>
+                                <td class="text-center">
+                                    <input type="checkbox" name="students[]" value="`+v.id+`">
+                                </td>
+                                <td>`+v.nik+`</td>
+                                <td>`+v.nim+`</td>
+                                <td>`+v.full_name+`</td>
+                            </tr>`
+                        );
+                    });
             },
             error: function(xhr, textStatus, error) {
                 popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
@@ -64,7 +91,7 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Academic Period</label>
+                                <label class="control-label">Academic Period *</label>
                                 <select class="sel form-control" name="academic_period_id" onchange="getMajor(this.value)">
                                     @foreach ($academic_period as $period)
                                         <option value="{{$period->id}}" 
@@ -77,8 +104,8 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Major</label>
-                                <select class="sel form-control" name="major_id" id="major_id">
+                                <label class="control-label">Major *</label>
+                                <select class="sel form-control" name="major_id" id="major_id" onchange="getStudents(this.value)">
                                     @foreach ($majors as $major)
                                         <option value="{{$major->id}}"
                                         @if($data->major_id == $major->id)
@@ -90,12 +117,12 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Code</label>
+                                <label class="control-label">Code *</label>
                                 <input type="text" name="code" class="form-control" placeholder="" value="{{$data->code}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Name</label>
+                                <label class="control-label">Name *</label>
                                 <input type="text" name="name" class="form-control" placeholder="" value="{{$data->name}}">
                                 <span class="help-block"></span>
                             </div>
@@ -116,7 +143,7 @@
                                                 <th>FullName</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
+                                        <tbody id="listStudents">
                                         @foreach ($list_student as $student)
                                             <tr>
                                                 <td class="text-center">

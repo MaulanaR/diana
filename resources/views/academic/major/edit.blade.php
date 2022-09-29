@@ -44,7 +44,7 @@
 
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="control-label">Academic Period</label>
+                                <label class="control-label">Academic Period *</label>
                                 <select class="sel form-control" name="academic_period_id">
                                     @foreach ($academic_period as $period)
                                         <option value="{{$period->id}}" 
@@ -57,12 +57,12 @@
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Code</label>
+                                <label class="control-label">Code *</label>
                                 <input type="text" name="code" class="form-control" placeholder="" value="{{$data->code}}">
                                 <span class="help-block"></span>
                             </div>
                             <div class="form-group">
-                                <label class="control-label">Name</label>
+                                <label class="control-label">Name *</label>
                                 <input type="text" name="name" class="form-control" placeholder="" value="{{$data->name}}">
                                 <span class="help-block"></span>
                             </div>

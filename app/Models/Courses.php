@@ -26,6 +26,7 @@ class Courses extends Model
         'major_id',
         'class_id',
         'name',
+        'file',
         'sks',
         'total_unit',
         'description_unit',

@@ -48,7 +48,7 @@
                             <input type="hidden" name="created_by" value="{{Auth::user()->id}}">
                             <input type="hidden" name="student_id" value="{{Auth::user()->id}}">
                             <div class="form-group">
-                                <label class="control-label">Internship Period</label>
+                                <label class="control-label">Internship Period *</label>
                                 <select class="sel form-control" name="internship_period_id">
                                     @foreach ($periods as $period)
                                         <option value="{{$period->id}}">{{$period->name}}</option>
@@ -69,32 +69,32 @@
                             </div>
                             <div class="card-body" id="pilih" style="display: none; background-color:#F0FFFF">
                                 <div class="form-group">
-                                    <label class="control-label">Nama Tempat Magang</label>
+                                    <label class="control-label">Nama Tempat Magang *</label>
                                     <input type="text" name="name" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Alamat</label>
+                                    <label class="control-label">Alamat *</label>
                                     <input type="text" name="address" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Kontak</label>
+                                    <label class="control-label">Kontak *</label>
                                     <input type="text" name="pic_contact" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Jabatan Kontak</label>
+                                    <label class="control-label">Jabatan Kontak *</label>
                                     <input type="text" name="pic_position" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">No Telp Perusahaan</label>
+                                    <label class="control-label">No Telp Perusahaan *</label>
                                     <input type="text" name="phone" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label">Surat Legal</label>
+                                    <label class="control-label">Surat Legal *</label>
                                     <input type="file" name="legal_file" class="form-control" placeholder="" value="">
                                     <span class="help-block"></span>
                                 </div>
