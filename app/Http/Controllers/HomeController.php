@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AcademicPeriods;
 use App\Models\Classes;
 use App\Models\Instructors;
 use App\Models\Majors;
@@ -168,13 +169,16 @@ class HomeController extends Controller
         $send['isInstructor'] = $isInstructor;
 
         if ($isAdmin) {
+            $p = AcademicPeriods::where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
+            $send['period'] = $p;
+            $send['mhs'] = '';
             return view('home', $send);
         } else if ($isStudent) {
-            $send['title'] = 'Biodata';
+            $send['title'] = 'Dashboard';
             $send['data'] = Students::where('id', Auth::user()->id)->first();
             return view('home_student', $send);
         } else if ($isInstructor) {
-            $send['title'] = 'Biodata';
+            $send['title'] = 'Dashboard';
             $send['data'] = Instructors::where('id', Auth::user()->id)->first();
             return view('home_instructor', $send);
         }

@@ -6,9 +6,10 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('daterangepicker/daterangepicker.css') }}" />
     <style>
         .styletable {
-                border-collapse: separate; 
-                border-spacing: 0 10px; 
-                margin-top: -10px; /* correct offset on first border spacing if desired */
+            border-collapse: separate;
+            border-spacing: 0 10px;
+            margin-top: -10px;
+            /* correct offset on first border spacing if desired */
         }
     </style>
 @endsection
@@ -22,10 +23,10 @@
         Highcharts.chart('containerx', {
 
             title: {
-                @if(!$filter)
-                text: 'Grafik Kunjungan Bulanan Tahun {{date('Y')}}'
+                @if (!$filter)
+                    text: 'Grafik Kunjungan Bulanan Tahun {{ date('Y') }}'
                 @else
-                text: 'Grafik Kunjungan Bulanan ({{$awal}} - {{$akhir}})'
+                    text: 'Grafik Kunjungan Bulanan ({{ $awal }} - {{ $akhir }})'
                 @endif
             },
 
@@ -38,14 +39,14 @@
 
             xAxis: {
                 accessibility: {
-                    @if(!$filter)
+                    @if (!$filter)
                         rangeDescription: 'Bulan Januari - Desember'
                     @else
-                        rangeDescription: '{{$awal}} - {{$akhir}}'
+                        rangeDescription: '{{ $awal }} - {{ $akhir }}'
                     @endif
                 },
-                @if(!$filter)
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun','Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                @if (!$filter)
+                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
                 @else
                     categories: <?php echo json_encode($list, true); ?>
                 @endif
@@ -102,40 +103,126 @@
 @endsection
 
 @section('content')
-    @if ($isAdmin) 
-    <div class="row">
-        <div class="col-12">
-            <div class="card">
-                <div class="card-body">
-                    <form action="{{ route('homelogin') }}" method="GET">
-                        <div class="row">
-                            <div class="col-3">
-                                <h5><i class="fas fa-filter"></i> Filter Berdasarkan Range:</h5>
-                            </div>
-                            <div class="col-7">
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <button class="btn btn-md btn-outline-primary"><i
-                                                class="fas fa-calendar"></i></button>
+    @if ($isAdmin)
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>{{isset($period->name) ?$period->name : '-' }}</h3>
+                        <p>Periode Akademik</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>150</h3>
+                        <p>Jumlah Mahasiswa</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>150</h3>
+                        <p>Jumlah Mahasiswa Laki-laki</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>150</h3>
+                        <p>Jumlah Mahasiswi Perempuan</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <p>Jumlah Instruktur</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>44</h3>
+                        <p>Jumlah Jurusan</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-6">
+                <div class="small-box bg-white">
+                    <div class="inner">
+                        <h3>65</h3>
+                        <p>Jumlah Kelas</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <form action="{{ route('homelogin') }}" method="GET">
+                            <div class="row">
+                                <div class="col-3">
+                                    <h5><i class="fas fa-filter"></i> Filter Berdasarkan Range:</h5>
+                                </div>
+                                <div class="col-7">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <button class="btn btn-md btn-outline-primary"><i
+                                                    class="fas fa-calendar"></i></button>
+                                        </div>
+                                        <input type="text" class="form-control" id="filterDate" required=""
+                                            placeholder="Filter by Range Date" autocomplete="off" name="filterDate"
+                                            @if ($filter) value="{{ $isian }}" @endif>
                                     </div>
-                                    <input type="text" class="form-control" id="filterDate" required=""
-                                        placeholder="Filter by Range Date" autocomplete="off" name="filterDate" @if ($filter)
-                                    value="{{ $isian }}"
-                                    @endif
-                                    >
+                                </div>
+                                <div class="col-2 text-center">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary" alt="Filter"><i
+                                            class="fas fa-filter"></i> Filter</button>
+                                    <a href="{{ route('homelogin') }}" class="btn btn-sm btn-outline-success"
+                                        alt="Reset"><i class="fas fa-undo"></i> Reset</a>
                                 </div>
                             </div>
-                            <div class="col-2 text-center">
-                                <button type="submit" class="btn btn-sm btn-outline-primary" alt="Filter"><i class="fas fa-filter"></i> Filter</button>
-                                <a href="{{route('homelogin')}}" class="btn btn-sm btn-outline-success" alt="Reset"><i class="fas fa-undo"></i> Reset</a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
 
-                <!-- /.card-header -->
-                <div class="card-body row" style="min-height: 25em !important">
-                    <div class="col-12 col-md-5">
+                    <!-- /.card-header -->
+                    <div class="card-body row" style="min-height: 25em !important">
+                        <div class="col-12 col-md-5">
                             <div class="card card-default" style="position: relative; left: 0px; top: 0px;box-shadow:none">
                                 <div class="card-header border-0 ">
                                     <h3 class="card-title">
@@ -176,21 +263,22 @@
                                             </tr>
                                             <tr>
                                                 <td>Login Terakhir</td>
-                                                <td>{{ date('d-m-Y H:i', strtotime(Auth::user()->before_last_login_at)) }}</td>
+                                                <td>{{ date('d-m-Y H:i', strtotime(Auth::user()->before_last_login_at)) }}
+                                                </td>
                                             </tr>
 
                                         </table>
                                     </div>
                                 </div>
                             </div>
-                    </div>
-                    <div class="col-12 col-md-7" id="containerx">
+                        </div>
+                        <div class="col-12 col-md-7" id="containerx">
 
+                        </div>
                     </div>
                 </div>
             </div>
+            <!-- /.col -->
         </div>
-        <!-- /.col -->
-    </div>
     @endif
 @endsection
