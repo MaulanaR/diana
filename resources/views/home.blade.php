@@ -120,7 +120,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>{{$total_mhs}}</h3>
                         <p>Jumlah Mahasiswa</p>
                     </div>
                     <div class="icon">
@@ -132,11 +132,11 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>{{$total_mhs_l}}</h3>
                         <p>Jumlah Mahasiswa Laki-laki</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-male"></i>
                     </div>
                 </div>
             </div>
@@ -144,11 +144,11 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>150</h3>
+                        <h3>{{$total_mhs_p}}</h3>
                         <p>Jumlah Mahasiswi Perempuan</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-user"></i>
+                        <i class="fas fa-female"></i>
                     </div>
                 </div>
             </div>
@@ -156,7 +156,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
+                        <h3>{{$total_instrutur}}</h3>
                         <p>Jumlah Instruktur</p>
                     </div>
                     <div class="icon">
@@ -168,7 +168,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3>{{$total_jurusan}}</h3>
                         <p>Jumlah Jurusan</p>
                     </div>
                     <div class="icon">
@@ -180,7 +180,7 @@
             <div class="col-lg-3 col-6">
                 <div class="small-box bg-white">
                     <div class="inner">
-                        <h3>65</h3>
+                        <h3>{{$total_kelas}}</h3>
                         <p>Jumlah Kelas</p>
                     </div>
                     <div class="icon">

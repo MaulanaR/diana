@@ -44,7 +44,7 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-white">
             <div class="inner">
-                <h3>65</h3>
+                <h3>{{isset($period->name) ?$period->name : '-' }}</h3>
                 <p>Periode Akademik</p>
             </div>
             <div class="icon">
@@ -56,56 +56,8 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-white">
             <div class="inner">
-                <h3>150</h3>
-                <p>Jumlah Mahasiswa</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-white">
-            <div class="inner">
-                <h3>150</h3>
-                <p>Jumlah Mahasiswa Laki-laki</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-white">
-            <div class="inner">
-                <h3>150</h3>
-                <p>Jumlah Mahasiswi Perempuan</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-white">
-            <div class="inner">
-                <h3>53<sup style="font-size: 20px">%</sup></h3>
-                <p>Jumlah Instruktur</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-user"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-3 col-6">
-        <div class="small-box bg-white">
-            <div class="inner">
-                <h3>44</h3>
-                <p>Jumlah Jurusan</p>
+                <h3>{{$total_course}}</h3>
+                <p>Matakuliah</p>
             </div>
             <div class="icon">
                 <i class="fas fa-book"></i>
@@ -116,8 +68,8 @@
     <div class="col-lg-3 col-6">
         <div class="small-box bg-white">
             <div class="inner">
-                <h3>65</h3>
-                <p>Jumlah Kelas</p>
+                <h3>{{$total_sks}}</h3>
+                <p>Total SKS</p>
             </div>
             <div class="icon">
                 <i class="fas fa-book"></i>
@@ -125,6 +77,17 @@
         </div>
     </div>
 
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-white">
+            <div class="inner">
+                <h3>{{$total_ipk}}</h3>
+                <p>IPK</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-book"></i>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-12">

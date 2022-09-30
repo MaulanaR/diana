@@ -145,9 +145,9 @@ class UsersController extends Controller
                     //Jika group student / instructor maka insert ke table detailnya
                     $g = Group::where('id', $key)->first();
                     if ($g->name == "student") {
-                        Students::firstOrCreate(['id' => $user->id, 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id')]);
+                        Students::firstOrCreate(['id' => $user->id, 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id'), 'avatar' => $data['picture']]);
                     } else if ($g->name == "instructor") {
-                        Instructors::firstOrCreate(['id' => $user->id, 'name' => $request->input('name'), 'email' => $request->input('email')]);
+                        Instructors::firstOrCreate(['id' => $user->id, 'name' => $request->input('name'), 'email' => $request->input('email'), 'avatar' => $data['picture']]);
                     }
                 }
 
@@ -269,12 +269,25 @@ class UsersController extends Controller
                         if ($ada) {
                             $ada->full_name = $request->input('name');
                             $ada->major_id = $request->input('major_id');
+                            if ($request->file('avatar')) {
+                                $ada->avatar = $data['picture'];
+                            }
                             $ada->save();
                         } else {
-                            Students::create(['id' => $request->input('id'), 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id')]);
+                            Students::create(['id' => $request->input('id'), 'full_name' => $request->input('name'), 'major_id' => $request->input('major_id'), 'avatar' => isset($data['picture']) ? $data['picture'] : '']);
                         }
                     } else if ($g->name == "instructor") {
-                        Instructors::firstOrCreate(['id' => $request->input('id'), 'name' => $request->input('name')]);
+                        $ada = Instructors::findOrFail($request->input('id'));
+                        if ($ada) {
+                            $ada->name = $request->input('name');
+                            $ada->email = $request->input('email');
+                            if ($request->file('avatar')) {
+                                $ada->avatar = $data['picture'];
+                            }
+                            $ada->save();
+                        } else {
+                            Instructors::create(['id' => $request->input('id'), 'name' => $request->input('name'), 'avatar' => isset($data['picture']) ? $data['picture'] : '', 'email' => $request->input('email')]);
+                        }
                     }
                 }
 

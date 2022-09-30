@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\AcademicPeriods;
 use App\Models\Classes;
+use App\Models\Courses;
 use App\Models\Instructors;
 use App\Models\Majors;
+use App\Models\StudentCourseGrade;
 use App\Models\Students;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -171,13 +173,119 @@ class HomeController extends Controller
         if ($isAdmin) {
             $p = AcademicPeriods::where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
             $send['period'] = $p;
-            $send['mhs'] = '';
+            $total_mhs = 0;
+            $total_mhs_l = 0;
+            $total_mhs_p = 0;
+            $total_jurusan = 0;
+            $total_kelas = 0;
+            if ($p) {
+                $c = Classes::where('academic_period_id', $p->id)->get();
+                foreach ($c as $cs) {
+                    $s = \DB::table('classes_students')->where('class_id', \DB::raw($cs->id))->get();
+                    foreach ($s as $key => $s2) {
+                        $st = Students::where('id', $s2->student_id)->first();
+                        if ($st->gender == "male") {
+                            $total_mhs_l++;
+                        } else if ($st->gender == "female") {
+                            $total_mhs_p++;
+                        }
+                    }
+                    $total_mhs += $s->count();
+                }
+                $total_jurusan = Majors::where('academic_period_id', $p->id)->count();
+                $total_kelas = $c->count();
+            }
+            $send['total_mhs'] = $total_mhs;
+            $send['total_mhs_l'] = $total_mhs_l;
+            $send['total_mhs_p'] = $total_mhs_p;
+            $send['total_instrutur'] = Instructors::count();
+            $send['total_jurusan'] = $total_jurusan;
+            $send['total_kelas'] = $total_kelas;
+
             return view('home', $send);
         } else if ($isStudent) {
+            $p = AcademicPeriods::where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
+            $send['period'] = $p;
+            $total_course = 0;
+            $total_sks = 0;
+            $total_final = 0;
+            if ($p) {
+                $c = Classes::where('academic_period_id', $p->id)->get();
+
+                foreach ($c as $cs) {
+                    $s = \DB::table('classes_students')
+                        ->where('class_id', $cs->id)
+                        ->where('student_id', Auth::user()->id)
+                        ->get();
+
+                    //total course / mata kuliah
+                    //total sks
+                    //ipk
+                    foreach ($s as $vc) {
+                        $cQ = Courses::where('academic_period_id', $p->id)
+                            ->where('class_id', $vc->class_id)
+                            ->get();
+
+                        foreach ($cQ as $valueQ) {
+                            $total_course++;
+                            $total_sks += $valueQ->sks;
+
+                            $n = StudentCourseGrade::where('course_id', $valueQ->id)
+                                ->where('student_id', Auth::user()->id)
+                                ->get();
+
+                            foreach ($n as $vn) {
+                                $total_final += $vn->final * $valueQ->sks;
+                            }
+                        }
+                    }
+                }
+            }
+
+            $send['total_course'] = $total_course;
+            $send['total_sks'] = $total_sks;
+            if ($total_sks != 0) {
+                $send['total_ipk'] = $total_final / $total_sks;
+            } else {
+                $send['total_ipk'] = 0;
+            }
+
             $send['title'] = 'Dashboard';
             $send['data'] = Students::where('id', Auth::user()->id)->first();
             return view('home_student', $send);
         } else if ($isInstructor) {
+            $p = AcademicPeriods::where('start_date', '<=', date('Y-m-d'))->where('end_date', '>=', date('Y-m-d'))->first();
+            $send['period'] = $p;
+            $total_course = 0;
+            $total_kelas = 0;
+            if ($p) {
+                $c = Courses::query();
+                $c->select("class_id");
+                $c->where('academic_period_id', $p->id);
+                $c->groupBy('class_id');
+                $c->where(function ($query) {
+                    $query->where('instructor_id', Auth::user()->id)
+                        ->orWhere('head_instructor_id', Auth::user()->id);
+                });
+                foreach ($c->get() as $key => $value) {
+                    $total_kelas++;
+                }
+
+                $tc = Courses::query();
+                $tc->select("name");
+                $tc->where('academic_period_id', $p->id);
+                $tc->groupBy('name');
+                $tc->where(function ($query) {
+                    $query->where('instructor_id', Auth::user()->id)
+                        ->orWhere('head_instructor_id', Auth::user()->id);
+                });
+                foreach ($tc->get() as $key => $value) {
+                    $total_course++;
+                }
+            }
+            $send['total_course'] = $total_course;
+            $send['total_kelas'] = $total_kelas;
+
             $send['title'] = 'Dashboard';
             $send['data'] = Instructors::where('id', Auth::user()->id)->first();
             return view('home_instructor', $send);
