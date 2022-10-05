@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 use Session;
 use Illuminate\Support\Facades\Auth;
 
-const modulName = "Courses";
+const modulName = "Mata Kuliah";
 
 class CoursesController extends Controller
 {

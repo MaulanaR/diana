@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>{{ isset($title) ? $title.' | ' : '' }} {{ config('app.name', 'Sistem Informasi') }}</title>
+    <title>{{ isset($title) ? $title . ' | ' : '' }} {{ config('app.name', 'Sistem Informasi') }}</title>
     <!-- Tell the browser to be responsive to screen width -->
-	<link rel="shortcut icon" href="{{asset('logo/logo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('logo/logo.png') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('adminlte/plugins/fontawesome-free/css/all.min.css') }}">
@@ -18,24 +19,37 @@
     <link type="text/css" rel="stylesheet" href="{{ asset('bootstrap-select/css/bootstrap-select.min.css') }}" />
     <style>
         #loadingx {
-          display: none; /* Hidden by default */
-          position: fixed; /* Fixed/sticky position */
-          bottom: 20px; /* Place the button at the bottom of the page */
-          right: 30px; /* Place the button 30px from the right */
-          z-index: 99; /* Make sure it does not overlap */
-          border: 1px solid grey; /* Remove borders */
-          outline: none; /* Remove outline */
-          background-color: white; /* Set a background color */
-          color: white; /* Text color */
-          cursor: pointer; /* Add a mouse pointer on hover */
-          padding: 10px; /* Some padding */
-          border-radius: 10px; /* Rounded corners */
-          font-size: 15px; /* Increase font size */
-          color:#494E54;
-          box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Fixed/sticky position */
+            bottom: 20px;
+            /* Place the button at the bottom of the page */
+            right: 30px;
+            /* Place the button 30px from the right */
+            z-index: 99;
+            /* Make sure it does not overlap */
+            border: 1px solid grey;
+            /* Remove borders */
+            outline: none;
+            /* Remove outline */
+            background-color: white;
+            /* Set a background color */
+            color: white;
+            /* Text color */
+            cursor: pointer;
+            /* Add a mouse pointer on hover */
+            padding: 10px;
+            /* Some padding */
+            border-radius: 10px;
+            /* Rounded corners */
+            font-size: 15px;
+            /* Increase font size */
+            color: #494E54;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
-        ul.nav-treeview > li.nav-item{
+        ul.nav-treeview>li.nav-item {
             padding-left: 1em !important;
         }
     </style>
@@ -46,20 +60,22 @@
     <!-- Site wrapper -->
     <div class="wrapper">
         <!-- Navbar -->
-        <div id="loadingx" title="Go to top"><span class="spinner-border text-primary spinner-border-sm"></span> Loading..</div> 
+        <div id="loadingx" title="Go to top"><span class="spinner-border text-primary spinner-border-sm"></span>
+            Loading..</div>
         <nav class="main-header navbar navbar-expand navbar-dark navbar-purple">
             <!-- Left navbar links -->
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+                            class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
                     <span class="nav-link">
                         @if (Session::has('current_roles'))
-                                @foreach (Session::get('current_roles') as $item_sessi)
-                                    <i class="fas fa-info-circle"></i> Role Aktif: {{ucwords($item_sessi->name)}}
-                                @endforeach
-                            @endif
+                            @foreach (Session::get('current_roles') as $item_sessi)
+                                <i class="fas fa-info-circle"></i> Role Aktif: {{ ucwords($item_sessi->name) }}
+                            @endforeach
+                        @endif
                     </span>
                 </li>
             </ul>
@@ -73,7 +89,7 @@
                 <li class="nav-item">
                     <a class="btn btn-md btn-danger" href="#" role="button"
                         onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                        <i class="fas fa-sign-out-alt"></i> Log Out
+                        <i class="fas fa-sign-out-alt"></i> Keluar
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                         @csrf
@@ -97,15 +113,16 @@
                 <!-- Sidebar user (optional) -->
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        @if(file_exists(public_path('avatar/'.Auth::user()->picture))) 
-                        <img src="{{asset('avatar/'.Auth::user()->picture)}}" class="img-circle elevation-2" alt="User Image">
+                        @if (file_exists(public_path('avatar/' . Auth::user()->picture)))
+                            <img src="{{ asset('avatar/' . Auth::user()->picture) }}" class="img-circle elevation-2"
+                                alt="User Image">
                         @else
-                        <img src="{{asset('avatar/user.png')}}" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{ asset('avatar/user.png') }}" class="img-circle elevation-2" alt="User Image">
                         @endif
                     </div>
-                    <div class="info" >
+                    <div class="info">
                         <a href="#" class="d-block">{{ Auth::user()->name }}</a>
-                        
+
                     </div>
                 </div>
 
@@ -141,7 +158,7 @@
                         <div class="col-12">
                             <h3>{{ isset($title) ? $title : '' }}</h3>
                         </div>
-                        
+
                     </div>
                 </div><!-- /.container-fluid -->
             </section>
@@ -170,12 +187,12 @@
     <!-- ./wrapper -->
     @php
         $group_grole = DB::table('alus_ug')
-                ->where('user_id', Auth::user()->id)
-                ->join('alus_g', 'alus_ug.group_id', '=', 'alus_g.id')
-                ->get();
+            ->where('user_id', Auth::user()->id)
+            ->join('alus_g', 'alus_ug.group_id', '=', 'alus_g.id')
+            ->get();
         $opt_rol = null;
         foreach ($group_grole as $key_group_grole => $val_group_grole) {
-            $opt_rol .= '<option value="'.$val_group_grole->group_id.'">'.$val_group_grole->name.'</option>';
+            $opt_rol .= '<option value="' . $val_group_grole->group_id . '">' . $val_group_grole->name . '</option>';
         }
     @endphp
     <!-- jQuery -->
@@ -191,213 +208,211 @@
     <script src="{{ asset('sweetalert2/dist/sweetalert2.min.js') }}"></script>
 
     <script>
-    
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-        beforeSend: function(xhr, settings) {
-          $("#loadingx").show();
-        },
-        complete: function(data)
-        {
-            $("#loadingx").hide();
-        },
-    });
-
-  function popup(judul = null, msg = null, tipe = 'success', red = false, timec = 3000) {
-      let timerInterval
-      Swal.fire({
-          title: judul,
-          html: msg + '',
-          type: tipe,
-          timer: timec,
-          timerProgressBar: true,
-          onBeforeOpen: () => {
-            timerInterval = setInterval(() => {
-                  const content = Swal.getContent()
-                  if (content) {
-                      const b = content.querySelector('span')
-                      if (b) {
-                          b.textContent = Swal.getTimerLeft()
-                      }
-                  }
-              }, 100)
-          },
-          onClose: () => {
-              clearInterval(timerInterval);
-              if (red) {
-                  window.location.href = "{{ url('/') }}/" + red;
-              }
-          }
-      }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-              if (red) {
-                  window.location.href = "{{ url('/') }}/" + red;
-              }
-          }
-      })
-  }
-
-  function popup_reload(judul = null, msg = null, tipe = 'success', timex = 3000) {
-      let timerInterval
-      Swal.fire({
-          title: judul,
-          html: msg + '',
-          type: tipe,
-          allowOutsideClick: false,
-          allowEnterKey: false,
-          allowEscapeKey: false,
-          timer: timex,
-          timerProgressBar: true,
-          onBeforeOpen: () => {
-              timerInterval = setInterval(() => {
-                  const content = Swal.getContent()
-                  if (content) {
-                    //   const b = content.querySelector('span')
-                    //   if (b) {
-                    //       b.textContent = Swal.getTimerLeft()
-                    //   }
-                  }
-              }, 100)
-          },
-          onClose: () => {
-              clearInterval(timerInterval);
-              location.reload();
-          }
-      }).then((result) => {
-          if (result.dismiss === Swal.DismissReason.timer) {
-              location.reload();
-          }
-      })
-  }
-
-  function change_role()
-  {
-    Swal.fire({
-    title: 'Pilih Role : ',
-    html : '<select class="form-control" id="sel_rol">{!!$opt_rol!!}</select>',
-    showCancelButton: true,
-    confirmButtonText: 'Proses !',
-    showLoaderOnConfirm: true,
-    allowOutsideClick: () => !Swal.isLoading()
-    }).then((result) => {
-    if (result.value) {
-        $.ajax({
-            type: "GET",
-            url: "{{route('change_role')}}",
-            data: {'id_group' : $("#sel_rol").val()},
-            dataType: "json",
-            success: function (response) {
-                if(response.status){
-                    window.location.replace("{{url('/backend')}}");
-                }else{
-                    popup('gagal',`${xhr.responseText}`,'error');
-                }
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
-            error: function(xhr, status, error){
-                popup('gagal',`${xhr.responseText}`,'error');
-            }
-        })
-    }
-    })
-  }
+            beforeSend: function(xhr, settings) {
+                $("#loadingx").show();
+            },
+            complete: function(data) {
+                $("#loadingx").hide();
+            },
+        });
 
-  function JSONToCSVConvertor(JSONData, Label, ShowLabel) {
-        //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
-        var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-        var CSV = '';
-        //Set Report title in first row or line
-        CSV += Label + '\r\n\n';
-        //This condition will generate the Label/Header
-        if (ShowLabel) {
-            var row = "";
-            //This loop will extract the label from 1st index of on array
-            for (var index in arrData[0]) {
-                //Now convert each value to string and comma-seprated
-                row += index + ',';
-
-            }
-            row = row.slice(0, -1);
-            //append Label row with line break
-            CSV += row + '\r\n';
-        }
-        //1st loop is to extract each row
-        for (var i = 0; i < arrData.length; i++) {
-            var row = "";
-            //2nd loop will extract each column and convert it in string comma-seprated
-            for (var index in arrData[i]) {
-
-                row += '"' + arrData[i][index] + '",';
-
-            }
-            row.slice(0, row.length - 1);
-            //add a line break after each row
-            CSV += row + '\r\n';
-        }
-        if (CSV == '') {
-            alert("Invalid data");
-            return;
-        }
-        //Generate a file name
-        var fileName = Label;
-
-        //Initialize file format you want csv or xls
-        var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-        var link = document.createElement("a");
-        link.href = URL.createObjectURL(new Blob([CSV], {
-            type: "application/octet-stream"
-        })); //added to fix network error problem in chrome
-        link.style = "visibility:hidden";
-        link.download = fileName + ".csv";
-        //this part will append the anchor tag and remove it after automatic click
-        document.body.appendChild(link);
-        link.click();
-        // document.body.removeChild(link);
-    }
-
-    function headerValues(id) {
-        return $('#' + id).data('JSGrid')
-            .fields
-            .map(function(d) {
-                return d
+        function popup(judul = null, msg = null, tipe = 'success', red = false, timec = 3000) {
+            let timerInterval
+            Swal.fire({
+                title: judul,
+                html: msg + '',
+                type: tipe,
+                timer: timec,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    timerInterval = setInterval(() => {
+                        const content = Swal.getContent()
+                        if (content) {
+                            const b = content.querySelector('span')
+                            if (b) {
+                                b.textContent = Swal.getTimerLeft()
+                            }
+                        }
+                    }, 100)
+                },
+                onClose: () => {
+                    clearInterval(timerInterval);
+                    if (red) {
+                        window.location.href = "{{ url('/') }}/" + red;
+                    }
+                }
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    if (red) {
+                        window.location.href = "{{ url('/') }}/" + red;
+                    }
+                }
             })
-    }
+        }
 
-    function dataObjects(id) {
-        return $('#' + id).data('JSGrid').data
-    }
+        function popup_reload(judul = null, msg = null, tipe = 'success', timex = 3000) {
+            let timerInterval
+            Swal.fire({
+                title: judul,
+                html: msg + '',
+                type: tipe,
+                allowOutsideClick: false,
+                allowEnterKey: false,
+                allowEscapeKey: false,
+                timer: timex,
+                timerProgressBar: true,
+                onBeforeOpen: () => {
+                    timerInterval = setInterval(() => {
+                        const content = Swal.getContent()
+                        if (content) {
+                            //   const b = content.querySelector('span')
+                            //   if (b) {
+                            //       b.textContent = Swal.getTimerLeft()
+                            //   }
+                        }
+                    }, 100)
+                },
+                onClose: () => {
+                    clearInterval(timerInterval);
+                    location.reload();
+                }
+            }).then((result) => {
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    location.reload();
+                }
+            })
+        }
 
-    function createJSONForSingle(object, id) {
-        var hash = {};
+        function change_role() {
+            Swal.fire({
+                title: 'Pilih Role : ',
+                html: '<select class="form-control" id="sel_rol">{!! $opt_rol !!}</select>',
+                showCancelButton: true,
+                confirmButtonText: 'Proses !',
+                showLoaderOnConfirm: true,
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                if (result.value) {
+                    $.ajax({
+                        type: "GET",
+                        url: "{{ route('change_role') }}",
+                        data: {
+                            'id_group': $("#sel_rol").val()
+                        },
+                        dataType: "json",
+                        success: function(response) {
+                            if (response.status) {
+                                window.location.replace("{{ url('/backend') }}");
+                            } else {
+                                popup('gagal', `${xhr.responseText}`, 'error');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            popup('gagal', `${xhr.responseText}`, 'error');
+                        }
+                    })
+                }
+            })
+        }
 
-        headerValues(id).map(function(key) {
-            hash[key.title] = object[key.name]
+        function JSONToCSVConvertor(JSONData, Label, ShowLabel) {
+            //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+            var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+            var CSV = '';
+            //Set Report title in first row or line
+            CSV += Label + '\r\n\n';
+            //This condition will generate the Label/Header
+            if (ShowLabel) {
+                var row = "";
+                //This loop will extract the label from 1st index of on array
+                for (var index in arrData[0]) {
+                    //Now convert each value to string and comma-seprated
+                    row += index + ',';
+
+                }
+                row = row.slice(0, -1);
+                //append Label row with line break
+                CSV += row + '\r\n';
+            }
+            //1st loop is to extract each row
+            for (var i = 0; i < arrData.length; i++) {
+                var row = "";
+                //2nd loop will extract each column and convert it in string comma-seprated
+                for (var index in arrData[i]) {
+
+                    row += '"' + arrData[i][index] + '",';
+
+                }
+                row.slice(0, row.length - 1);
+                //add a line break after each row
+                CSV += row + '\r\n';
+            }
+            if (CSV == '') {
+                alert("Invalid data");
+                return;
+            }
+            //Generate a file name
+            var fileName = Label;
+
+            //Initialize file format you want csv or xls
+            var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
+            var link = document.createElement("a");
+            link.href = URL.createObjectURL(new Blob([CSV], {
+                type: "application/octet-stream"
+            })); //added to fix network error problem in chrome
+            link.style = "visibility:hidden";
+            link.download = fileName + ".csv";
+            //this part will append the anchor tag and remove it after automatic click
+            document.body.appendChild(link);
+            link.click();
+            // document.body.removeChild(link);
+        }
+
+        function headerValues(id) {
+            return $('#' + id).data('JSGrid')
+                .fields
+                .map(function(d) {
+                    return d
+                })
+        }
+
+        function dataObjects(id) {
+            return $('#' + id).data('JSGrid').data
+        }
+
+        function createJSONForSingle(object, id) {
+            var hash = {};
+
+            headerValues(id).map(function(key) {
+                hash[key.title] = object[key.name]
+            });
+
+            return hash;
+        }
+
+        function createJSON(id) {
+            objects = dataObjects(id).map(function(o) {
+                return createJSONForSingle(o, id)
+            });
+
+            return JSON.stringify(objects, null, 2);
+        }
+
+        function exportToCsv(id, judul) {
+            JSONToCSVConvertor(createJSON(id), judul, true)
+        }
+
+        $(function() {
+            $("#prnih").parents().addClass("menu-open");
+            $('.sel').selectpicker({
+                'liveSearch': true
+            });
         });
-
-        return hash;
-    }
-
-    function createJSON(id) {
-        objects = dataObjects(id).map(function(o) {
-            return createJSONForSingle(o, id)
-        });
-
-        return JSON.stringify(objects, null, 2);
-    }
-
-    function exportToCsv(id, judul) {
-        JSONToCSVConvertor(createJSON(id), judul, true)
-    }
-
-  $(function() {
-    $("#prnih").parents().addClass("menu-open");
-        $('.sel').selectpicker({
-          'liveSearch': true
-        });
-    });
-
-</script>
+    </script>
 
     <!-- external js -->
     @yield('js')

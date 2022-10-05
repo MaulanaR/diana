@@ -1,19 +1,19 @@
 @extends('layouts.backend')
 
 @section('css')
-    <link type="text/css" rel="stylesheet" href="{{asset('jsgrid/dist/jsgrid.min.css')}}" />
-    <link type="text/css" rel="stylesheet" href="{{asset('jsgrid/dist/jsgrid-theme.min.css')}}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('jsgrid/dist/jsgrid.min.css') }}" />
+    <link type="text/css" rel="stylesheet" href="{{ asset('jsgrid/dist/jsgrid-theme.min.css') }}" />
 @endsection
 
 @section('js')
-    <script type="text/javascript" src="{{asset('jsgrid/dist/jsgrid.min.js')}}"></script>
+    <script type="text/javascript" src="{{ asset('jsgrid/dist/jsgrid.min.js') }}"></script>
     <script>
         $("#jsGrid").jsGrid({
             width: "100%",
             height: "auto",
             sorting: true,
             filtering: true,
-            selecting:true,
+            selecting: true,
             paging: true,
             autoload: true,
             pageIndex: 1,
@@ -23,32 +23,30 @@
             confirmDeleting: false,
             controller: {
                 loadData: function(filter) {
-                    filter.academic_period_id=$("#academic_period_id").val()
+                    filter.academic_period_id = $("#academic_period_id").val()
                     filter.major_id = $("#major_id").val()
                     filter.class_id = $("#class_id").val()
                     console.log(filter)
                     return $.ajax({
                         type: "GET",
-                        url: "{{route('courses.show')}}",
+                        url: "{{ route('courses.show') }}",
                         data: filter
                     });
                 },
 
-                insertItem: function(item) {
-                },
+                insertItem: function(item) {},
 
-                updateItem: function(item) {
-                },
+                updateItem: function(item) {},
 
                 deleteItem: function(item) {
                     return $.ajax({
                         type: "DELETE",
-                        url: "{{route('courses.destroy')}}",
+                        url: "{{ route('courses.destroy') }}",
                         data: item
-                    }).done(function (response) {
-                        popup("Berhasil",response.message,'success');
+                    }).done(function(response) {
+                        popup("Berhasil", response.message, 'success');
                     }).fail(function(xhr, status, error) {
-                        popup("Perhatian",xhr.responseJSON.message,'warning',false,3000);
+                        popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
                     });
                 },
             },
@@ -58,7 +56,7 @@
             onItemUpdated: function(args) {
                 $("#jsGrid").jsGrid("loadData");
             },
-            onItemDeleting: function (args) {
+            onItemDeleting: function(args) {
                 if (!args.item.deleteConfirmed) { // custom property for confirmation
                     args.cancel = true;
                     Swal.fire({
@@ -69,10 +67,10 @@
                         confirmButtonColor: '#3085d6',
                         cancelButtonColor: '#d33',
                         confirmButtonText: 'Lanjutkan Hapus.'
-                        }).then((result) => {
+                    }).then((result) => {
                         if (result.value) {
                             args.item.deleteConfirmed = true;
-                            $("#jsGrid").jsGrid("deleteItem",args.item);
+                            $("#jsGrid").jsGrid("deleteItem", args.item);
                         }
                     })
                 }
@@ -80,11 +78,10 @@
             onItemDeleted: function(args) {
                 $("#jsGrid").jsGrid("loadData");
             },
-            fields: [
-                {
+            fields: [{
                     name: "id",
                     title: "ID",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     visible: false,
                     width: 20,
@@ -92,7 +89,7 @@
                 {
                     name: "academic_period_name",
                     title: "Periode Akademik",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -100,7 +97,7 @@
                 {
                     name: "major_name",
                     title: "Jurusan",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -108,7 +105,7 @@
                 {
                     name: "class_name",
                     title: "Kelas",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -116,7 +113,7 @@
                 {
                     name: "semester",
                     title: "Semester",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -125,7 +122,7 @@
                 {
                     name: "categories",
                     title: "Kategori",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -134,7 +131,7 @@
                 {
                     name: "name",
                     title: "Nama MK",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -143,7 +140,7 @@
                 {
                     name: "sks",
                     title: "SKS",
-                    align : "center",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -151,8 +148,8 @@
                 },
                 {
                     name: "instructor_name",
-                    title: "Ketua Instruktur",
-                    align : "center",
+                    title: "Ketua Dosen",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -160,8 +157,8 @@
                 },
                 {
                     name: "instructor2_name",
-                    title: "Instruktur",
-                    align : "center",
+                    title: "Dosen",
+                    align: "center",
                     type: "text",
                     width: 50,
                     readOnly: false,
@@ -175,107 +172,113 @@
                         var eButton = '';
                         var dButton = '';
                         @if (session('can_edit'))
-                            eButton += '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Edit"><i class="fas fa-edit"></i> Edit Data</button>'
+                            eButton +=
+                                '<button type="button" class="btn btn-sm btn-outline-info text-left" title="Edit"><i class="fas fa-edit"></i> Edit Data</button>'
                         @endif
-                        @if (!$isStudent) 
-                            eButton += '<button type="button" class="btn btn-sm btn-outline-primary text-left" title="Bobot"><i class="fas fa-book"></i> Bobot</button>'
-                            eButton += '<button type="button" class="btn btn-sm btn-outline-success text-left" title="Nilai"><i class="fas fa-child"></i> Kelola Nilai</button>'
+                        @if (!$isStudent)
+                            eButton +=
+                                '<button type="button" class="btn btn-sm btn-outline-primary text-left" title="Bobot"><i class="fas fa-book"></i> Bobot</button>'
+                            eButton +=
+                                '<button type="button" class="btn btn-sm btn-outline-success text-left" title="Nilai"><i class="fas fa-child"></i> Kelola Nilai</button>'
                         @endif
                         @if (session('can_delete'))
-                            dButton += '<button type="button" class="btn btn-sm btn-outline-danger text-left" title="Delete"><i class="fas fa-trash"></i> Delete</button>'
+                            dButton +=
+                                '<button type="button" class="btn btn-sm btn-outline-danger text-left" title="Delete"><i class="fas fa-trash"></i> Delete</button>'
                         @endif
-                        let editDeleteBtn = $(startDiv+eButton+dButton+endDiv)
-                            .on('click', function (e) {
+                        let editDeleteBtn = $(startDiv + eButton + dButton + endDiv)
+                            .on('click', function(e) {
                                 if (e.target.title == 'Edit') {
                                     e.stopPropagation();
                                     modal_edit(item);
                                 } else if (e.target.title == 'Bobot') {
                                     e.stopPropagation();
-                                    window.location.href = "{{route('courses.editbobot')}}"+"/"+item.id;
+                                    window.location.href = "{{ route('courses.editbobot') }}" + "/" +
+                                        item.id;
                                 } else if (e.target.title == 'Nilai') {
                                     e.stopPropagation();
-                                    window.location.href = "{{route('courses.editnilai')}}"+"/"+item.id;
-                                } else if (e.target.title == 'Delete'){
-                                    $("#jsGrid").jsGrid("deleteItem",item);
+                                    window.location.href = "{{ route('courses.editnilai') }}" + "/" +
+                                        item.id;
+                                } else if (e.target.title == 'Delete') {
+                                    $("#jsGrid").jsGrid("deleteItem", item);
                                 }
                             });
-                        
+
                         return editDeleteBtn; //
                     },
                     @if (session('can_add'))
-                    headerTemplate: function(value, item) {
-                        var editDeleteBtn = $('<button type="button" class="btn btn-sm btn-success">+ Tambah</button>')
-                            .on('click', function (e) {
-                                modal_add();
-                            });
-                        return editDeleteBtn; //
-                    },
+                        headerTemplate: function(value, item) {
+                            var editDeleteBtn = $(
+                                    '<button type="button" class="btn btn-sm btn-success">+ Tambah</button>'
+                                )
+                                .on('click', function(e) {
+                                    modal_add();
+                                });
+                            return editDeleteBtn; //
+                        },
                     @endif
                 }
             ]
         });
-
     </script>
 
     <script>
-    function modal_edit(itemedit)
-    {
-        window.location.href = "{{route('courses.edit')}}"+"/"+itemedit.id;
-    }
+        function modal_edit(itemedit) {
+            window.location.href = "{{ route('courses.edit') }}" + "/" + itemedit.id;
+        }
 
-    function modal_add(){
-        window.location = "{{route('courses.modal')}}";
-    }
+        function modal_add() {
+            window.location = "{{ route('courses.modal') }}";
+        }
 
-    function refs() {
-        $("#jsGrid").jsGrid("loadData");
-    }
+        function refs() {
+            $("#jsGrid").jsGrid("loadData");
+        }
 
-    function getMajor(id) {
-        $.ajax({
-            type: "GET",
-            url: "{{ url('app/ajax/get_majors') }}/"+id,
-            dataType: "json",
-            success: function(response) {
-                $("#major_id").empty();
-                $("#class_id").empty();
-                $("#major_id").append('<option value="">-- ALL --</option>');
+        function getMajor(id) {
+            $.ajax({
+                type: "GET",
+                url: "{{ url('app/ajax/get_majors') }}/" + id,
+                dataType: "json",
+                success: function(response) {
+                    $("#major_id").empty();
+                    $("#class_id").empty();
+                    $("#major_id").append('<option value="">-- SEMUA --</option>');
                     $.each(response.data, function(indexInArray, valueOfElement) {
                         $("#major_id").append(
                             '<option value="' + valueOfElement.id + '">' + valueOfElement
                             .name + '</option>'
                         );
                     });
-                $("#major_id").selectpicker('refresh')
-                $("#class_id").selectpicker('refresh')
-            },
-            error: function(xhr, textStatus, error) {
-                popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
-            }
-        });
-    }
+                    $("#major_id").selectpicker('refresh')
+                    $("#class_id").selectpicker('refresh')
+                },
+                error: function(xhr, textStatus, error) {
+                    popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
+                }
+            });
+        }
 
-    function getClass(id) {
-        $.ajax({
-            type: "GET",
-            url: "{{ url('app/ajax/get_classes') }}/"+$("#academic_period_id").val()+"/"+id,
-            dataType: "json",
-            success: function(response) {
-                $("#class_id").empty();
-                $("#class_id").append('<option value="">-- ALL --</option>');
+        function getClass(id) {
+            $.ajax({
+                type: "GET",
+                url: "{{ url('app/ajax/get_classes') }}/" + $("#academic_period_id").val() + "/" + id,
+                dataType: "json",
+                success: function(response) {
+                    $("#class_id").empty();
+                    $("#class_id").append('<option value="">-- SEMUA --</option>');
                     $.each(response.data, function(indexInArray, valueOfElement) {
                         $("#class_id").append(
                             '<option value="' + valueOfElement.id + '">' + valueOfElement
                             .name + '</option>'
                         );
                     });
-                $("#class_id").selectpicker('refresh')
-            },
-            error: function(xhr, textStatus, error) {
-                popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
-            }
-        });
-    }
+                    $("#class_id").selectpicker('refresh')
+                },
+                error: function(xhr, textStatus, error) {
+                    popup("Perhatian", xhr.responseJSON.message, 'warning', false, 3000);
+                }
+            });
+        }
     </script>
 @endsection
 
@@ -291,44 +294,45 @@
                             </div>
                             <div class="col-3">
                                 <select class="sel form-control" id="academic_period_id" onchange="getMajor(this.value)">
-                                    <option value="">-- ALL --</option>
+                                    <option value="">-- SEMUA --</option>
                                     @foreach ($periods as $period)
-                                        <option value="{{$period->id}}">{{$period->name}}</option>
+                                        <option value="{{ $period->id }}">{{ $period->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
-                    @if(!$isStudent)
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-2">
-                                <label class="control-label">Jurusan :</label>
-                            </div>
-                            <div class="col-3">
-                                <select class="sel form-control" id="major_id"  onchange="getClass(this.value)">
-                                    <option value="">-- ALL --</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-2">
-                                <label class="control-label">Kelas :</label>
-                            </div>
-                            <div class="col-3">
-                                <select class="sel form-control" id="class_id">
-                                    <option value="">-- ALL --</option>
-                                </select>
+                    @if (!$isStudent)
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="control-label">Jurusan :</label>
+                                </div>
+                                <div class="col-3">
+                                    <select class="sel form-control" id="major_id" onchange="getClass(this.value)">
+                                        <option value="">-- SEMUA --</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label class="control-label">Kelas :</label>
+                                </div>
+                                <div class="col-3">
+                                    <select class="sel form-control" id="class_id">
+                                        <option value="">-- SEMUA --</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
                     @endif
                     <div class="form-group">
                         <div class="row">
                             <div class="col-5 text-right">
-                                <button type="button" class="btn btn-sm btn-primary" onclick="refs()"><i class="fas fa-search"></i> Filter</button>
+                                <button type="button" class="btn btn-sm btn-primary" onclick="refs()"><i
+                                        class="fas fa-search"></i> Filter</button>
                             </div>
                         </div>
                     </div>
@@ -338,7 +342,8 @@
                     <div id="jsGrid"></div>
                     <div class="row mt-3">
                         <div class="col-3">
-                            <button onclick="exportToCsv('jsGrid','{{isset($title) ? $title.' | ' : 'Export File'}}')" class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export to CSV</button>
+                            <button onclick="exportToCsv('jsGrid','{{ isset($title) ? $title . ' | ' : 'Export File' }}')"
+                                class="btn btn-sm btn-success"><i class="fa fa-file-excel"></i> Export to CSV</button>
                         </div>
                     </div>
                 </div>
@@ -351,9 +356,9 @@
 
     <div class="modal fade" id="modal_edit" tabindex="" style="display: none;" aria-hidden="true">
         <div class="modal-dialog modal-xl">
-          <div class="modal-content" id="body_edit">
-            
-          </div>
+            <div class="modal-content" id="body_edit">
+
+            </div>
         </div>
-      </div>
+    </div>
 @endsection

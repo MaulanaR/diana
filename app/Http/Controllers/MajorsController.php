@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
-const modulName = "Majors";
+const modulName = "Jurusan";
 
 class MajorsController extends Controller
 {
@@ -25,7 +25,7 @@ class MajorsController extends Controller
 
     public function modal()
     {
-        $data['title'] = 'Add ' . modulName;
+        $data['title'] = 'Tambah ' . modulName;
         $data['academic_period'] = AcademicPeriods::all();
         return view('academic.major.add', $data);
     }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Session;
 
-const modulName = "Internships Students";
+const modulName = "Mahasiswa Magang";
 
 class InternshipsStudentsController extends Controller
 {
@@ -44,7 +44,7 @@ class InternshipsStudentsController extends Controller
 
     public function modal()
     {
-        $data['title'] = 'Add ' . modulName;
+        $data['title'] = 'Tambah ' . modulName;
         $data['students'] = Students::get();
         $data['locations'] = InternshipLocations::get();
         $data['periods'] = InternshipPeriods::get();
@@ -423,7 +423,7 @@ class InternshipsStudentsController extends Controller
         //validasi dulu id yang dikirim ada atau tidak
         $ada = InternshipsStudents::findOrFail($id);
         $data['data'] = InternshipsStudents::where('id', $id)->first();
-        $data['title'] = "Evaluation " . modulName;
+        $data['title'] = "Nilai " . modulName;
         return view('internship.student.nilai', $data);
     }
 
